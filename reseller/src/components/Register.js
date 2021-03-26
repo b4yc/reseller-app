@@ -20,6 +20,8 @@ import { IonReactRouter } from "@ionic/react-router";
 import "./authenticate.css";
 
 const Register = () => {
+  const [fname, setFname] = useState();
+  const [lname, setLname] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   return (
@@ -32,6 +34,22 @@ const Register = () => {
         </IonHeader>
         <IonContent className="authenticate">
           <form>
+            <IonItem>
+              <IonLabel>First Name</IonLabel>
+              <IonInput
+                value={fname}
+                placeholder="first name"
+                onIonChange={(e) => setFname(e.detail.value)}
+              ></IonInput>
+            </IonItem>
+            <IonItem>
+              <IonLabel>Last Name</IonLabel>
+              <IonInput
+                value={lname}
+                placeholder="last name"
+                onIonChange={(e) => setLname(e.detail.value)}
+              ></IonInput>
+            </IonItem>
             <IonItem>
               <IonLabel>Email</IonLabel>
               <IonInput
