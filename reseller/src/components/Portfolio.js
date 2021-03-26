@@ -1,12 +1,31 @@
-import { IonContent, IonPage } from "@ionic/react";
+import { IonContent, IonPage, IonGrid, IonRow } from "@ionic/react";
 import React from "react";
 import FusionCharts from "fusioncharts";
 import Charts from "fusioncharts/fusioncharts.charts";
 import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
 import ReactFC from "react-fusioncharts";
+import { JsonToTable } from "react-json-to-table";
 ReactFC.fcRoot(FusionCharts, Charts, FusionTheme);
 
 const Portfolio = () => {
+
+  const saleData = [
+    {
+      "ID": 1,
+      "Item": "2021 Pokemon TCG Sword & Shield Shining Fates Elite Trainer Box",
+      "Buyer": "Thomas Kahessay"
+    },
+    {
+      "ID": 2,
+      "Item": "Jordan 1 Retro High Patina",
+      "Buyer": "Baylee Cheung"
+    },
+    {
+      "ID": 3,
+      "Item": "Sony PS5 PlayStation 5 (US Plug) Blu-ray Edition Console 3005718 White",
+      "Buyer": "Elize Tran"
+    }
+  ]
 
   const dataSource = {
     chart: {
@@ -37,8 +56,15 @@ const Portfolio = () => {
   };
 
   return (
-    <IonPage>Portfolio
-      <ReactFC {...chartConfigs} />
+    <IonPage>
+      <IonGrid>
+        <IonRow>
+          <JsonToTable json={saleData}/>
+        </IonRow>
+        <IonRow>
+        <ReactFC {...chartConfigs} />
+        </IonRow>
+      </IonGrid>
     </IonPage> 
 
   );

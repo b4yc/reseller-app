@@ -22,25 +22,12 @@ import Account from "./Account";
 import Portfolio from "./Portfolio";
 import TabBar from "./TabBar";
 
-const Dashboard1 = () => {
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Dashboard</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <TabBar />
-    </IonPage>
-  );
-};
-
 const Dashboard = () => {
   return (
     <IonApp>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Dashboard</IonTitle>
+          <IonTitle>ReZellers</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
