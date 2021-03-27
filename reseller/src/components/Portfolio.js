@@ -7,14 +7,17 @@ import {
   IonLabel,
   IonSelect,
   IonSelectOption,
+  IonItemDivider,
 } from "@ionic/react";
 import React, { useState } from "react";
 import FusionCharts from "fusioncharts";
 import Charts from "fusioncharts/fusioncharts.charts";
 import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+import TimeSeries from "fusioncharts/fusioncharts.timeseries";
 import ReactFC from "react-fusioncharts";
 import { JsonToTable } from "react-json-to-table";
-ReactFC.fcRoot(FusionCharts, Charts, FusionTheme);
+import ChartViewer from "./Chart";
+ReactFC.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries);
 
 const Portfolio = () => {
   const saleData = [
@@ -36,33 +39,6 @@ const Portfolio = () => {
     },
   ];
 
-  const dataSource = {
-    chart: {
-      caption: "Total Profit",
-      subCaption: "",
-      xAxisName: "2020",
-      yAxisName: "Profit (CAD)",
-      numberSuffix: "",
-      theme: "fusion",
-    },
-    data: [
-      { label: "January", value: "30" },
-      { label: "February", value: "30" },
-      { label: "March", value: "100" },
-      { label: "April", value: "115" },
-      { label: "May", value: "140" },
-      { label: "June", value: "180" },
-      { label: "July", value: "260" },
-      { label: "August", value: "290" },
-    ],
-  };
-  const chartConfigs = {
-    type: "line",
-    width: 600,
-    height: 400,
-    dataFormat: "json",
-    dataSource: dataSource,
-  };
   const [duration, setDuration] = useState("alltime");
 
   return (
@@ -71,22 +47,9 @@ const Portfolio = () => {
         <IonRow>
           <JsonToTable json={saleData} />
         </IonRow>
-        <IonItem>
-          <IonLabel>Duration</IonLabel>
-          <IonSelect
-            value={duration}
-            placeholder="Select One"
-            onIonChange={(e) => setDuration(e.detail.value)}
-          >
-            <IonSelectOption value="day">One Day</IonSelectOption>
-            <IonSelectOption value="week">One Week</IonSelectOption>
-            <IonSelectOption value="month">One Month</IonSelectOption>
-            <IonSelectOption value="year">One Year</IonSelectOption>
-            <IonSelectOption value="alltime">All Time</IonSelectOption>
-          </IonSelect>
-        </IonItem>
+        <IonItemDivider></IonItemDivider>
         <IonRow>
-          <ReactFC {...chartConfigs} />
+          <ChartViewer></ChartViewer>
         </IonRow>
       </IonGrid>
     </IonPage>

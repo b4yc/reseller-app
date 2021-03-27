@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Date",
+    "type": "date",
+    "format": "%d-%b-%y"
+  },
+  {
+    "name": "Profit",
+    "type": "number"
+  }
+]
