@@ -35,8 +35,9 @@ const App = () => {
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/dashboard" component={Dashboard} />
-            <Route path="/portfolio" component={Portfolio} />
-            <Route path="/account" component={Account} />
+            <Route path="/portfolio" component={Dashboard} />
+            <Route path="/account" component={Dashboard} />
+            <Route path="/inventory" component={Dashboard} />
             <Redirect exact from="/" to="/login" />
           </IonRouterOutlet>
         </IonReactRouter>
