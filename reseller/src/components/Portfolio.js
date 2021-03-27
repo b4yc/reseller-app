@@ -58,24 +58,10 @@ const Portfolio = () => {
             Buyer
           </IonCol>
         </IonRow>
-        <IonItemDivider></IonItemDivider>
         {saleData.map((sale) => (
           <SaleTable ID={sale.ID} item={sale.Item} buyer={sale.Buyer} />
         ))}
-        <IonItem>
-          <IonLabel>Duration</IonLabel>
-          <IonSelect
-            value={duration}
-            placeholder="Select One"
-            onIonChange={(e) => setDuration(e.detail.value)}
-          >
-            <IonSelectOption value="day">One Day</IonSelectOption>
-            <IonSelectOption value="week">One Week</IonSelectOption>
-            <IonSelectOption value="month">One Month</IonSelectOption>
-            <IonSelectOption value="year">One Year</IonSelectOption>
-            <IonSelectOption value="alltime">All Time</IonSelectOption>
-          </IonSelect>
-        </IonItem>
+        <IonItemDivider />
         <IonRow>
           <ChartViewer></ChartViewer>
         </IonRow>
