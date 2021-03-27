@@ -9,3 +9,29 @@
   width: 100%
 }
 
+// /* Popover Interface: set color for the popover using Item's CSS variables */
+// .dropdown-interface .select-interface-option {
+//   --color: #971e49;
+//   --color-hover: #79193b;
+//   --width: 100%;
+// }
+
+// /* Alert Interface: set color for alert options (single selection) */
+// .dropdown-interface .select-interface-option .alert-radio-label {
+//   color: #971e49;
+// }
+
+// /* Alert Interface: set color for alert options (multiple selection) */
+// .dropdown-interface .select-interface-option .alert-checkbox-label {
+//   color: #971e49;
+// }
+
+// /* Alert Interface: set color for checked alert options (single selection) */
+// .dropdown-interface .select-interface-option[aria-checked=true] .alert-radio-label {
+//   color: #79193b;
+// }
+
+// /* Alert Interface: set color for checked alert options (multiple selection) */
+// .dropdown-interface .select-interface-option[aria-checked=true] .alert-checkbox-label {
+//   color: #79193b;
+// }

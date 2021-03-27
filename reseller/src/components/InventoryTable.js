@@ -42,7 +42,9 @@ const InventoryTable = ({ ID, name, bprice, sprice, category, status }) => {
     setSPrice(parseFloat(sprice1).toFixed(2))
   }
 
-  
+  const options = {
+    cssClass: 'dropdown-interface'
+  };
 
   return (
     <IonRow>
@@ -69,7 +71,9 @@ const InventoryTable = ({ ID, name, bprice, sprice, category, status }) => {
         />
       </IonCol>
       <IonCol size="2">
-        <IonSelect
+        <IonSelect 
+          interface="popover" 
+          interfaceOptions={options}
           value={category1}
           onIonChange={(e) => setCategory(e.detail.value)}
         >
