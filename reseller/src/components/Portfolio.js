@@ -3,6 +3,7 @@ import {
   IonPage,
   IonGrid,
   IonRow,
+  IonCol,
   IonItem,
   IonLabel,
   IonSelect,
@@ -14,6 +15,8 @@ import Charts from "fusioncharts/fusioncharts.charts";
 import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
 import ReactFC from "react-fusioncharts";
 import { JsonToTable } from "react-json-to-table";
+import SaleTable from "./SaleTable";
+
 ReactFC.fcRoot(FusionCharts, Charts, FusionTheme);
 
 const Portfolio = () => {
@@ -30,8 +33,7 @@ const Portfolio = () => {
     },
     {
       ID: 3,
-      Item:
-        "Sony PS5 PlayStation 5 (US Plug) Blu-ray Edition Console 3005718 White",
+      Item: "Sony PS5 PlayStation 5 (US Plug) Blu-ray Edition Console 3005718 White",
       Buyer: "Elize Tran",
     },
   ];
@@ -69,8 +71,17 @@ const Portfolio = () => {
     <IonPage>
       <IonGrid>
         <IonRow>
-          <JsonToTable json={saleData} />
+          <IonCol className="header" size="1">ID</IonCol>
+          <IonCol className="header" size="8">Item</IonCol>
+          <IonCol className="header" size="3">Buyer</IonCol>
         </IonRow>
+        {saleData.map((sale) => (
+          <SaleTable
+            ID={sale.ID}
+            item={sale.Item}
+            buyer={sale.Buyer}
+          />
+        ))}
         <IonItem>
           <IonLabel>Duration</IonLabel>
           <IonSelect
