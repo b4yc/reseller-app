@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { JsonToTable } from "react-json-to-table";
-import Item from "./Item";
+import InventoryTable from "./InventoryTable";
 import "./Inventory.scss";
 
 const Inventory = () => {
@@ -18,16 +18,16 @@ const Inventory = () => {
     {
       ID: 1,
       Name: "2021 Pokemon TCG Sword & Shield Shining Fates Elite Trainer Box",
-      "Bought Price": 64.99,
-      "Sold Price": 102.0,
+      BoughtPrice: 64.99,
+      SoldPrice: 102.00,
       Category: "Card",
       Status: "Sold",
     },
     {
       ID: 2,
       Name: "Jordan 1 Retro High Patina",
-      "Bought Price": 170.0,
-      "Sold Price": 0.0,
+      BoughtPrice: 170.00,
+      SoldPrice: 0.00,
       Category: "Shoe",
       Status: "Available",
     },
@@ -35,8 +35,8 @@ const Inventory = () => {
       ID: 3,
       Name:
         "Sony PS5 PlayStation 5 (US Plug) Blu-ray Edition Console 3005718 White",
-      "Bought Price": 499.99,
-      "Sold Price": 906.0,
+      BoughtPrice: 499.99,
+      SoldPrice: 906.00,
       Category: "Electronic",
       Status: "Shipped",
     },
@@ -45,20 +45,21 @@ const Inventory = () => {
   return (
     <IonPage>
       <IonGrid>
-        <IonRow className="headerCell">
-          {/* <IonCol>ID</IonCol>
-          <IonCol>Name</IonCol>
-          <IonCol>Bought Price</IonCol>
-          <IonCol>Sold Price</IonCol>
-          <IonCol>Category</IonCol>
-          <IonCol>Status</IonCol> */}
+        <IonRow>
+          <IonCol className="header" size="0.5">ID</IonCol>
+          <IonCol className="header" size="4">Name</IonCol>
+          <IonCol className="header" size="1.5">Bought Price</IonCol>
+          <IonCol className="header" size="1.5">Sold Price</IonCol>
+          <IonCol className="header" size="2">Category</IonCol>
+          <IonCol className="header" size="2">Status</IonCol>
         </IonRow>
-        {/* <JsonToTable json={data}/> */}
         {data.map((item) => (
-          <Item
+          <InventoryTable
             name={item.Name}
-            price={item["Bought Price"]}
+            bprice={item.BoughtPrice}
+            sprice={item.SoldPrice}
             ID={item.ID}
+            category={item.Category}
             status={item.Status}
           />
         ))}

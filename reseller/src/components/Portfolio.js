@@ -3,6 +3,7 @@ import {
   IonPage,
   IonGrid,
   IonRow,
+  IonCol,
   IonItem,
   IonLabel,
   IonSelect,
@@ -18,6 +19,7 @@ import ReactFC from "react-fusioncharts";
 import { JsonToTable } from "react-json-to-table";
 import ChartViewer from "./Chart";
 ReactFC.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries);
+import SaleTable from "./SaleTable";
 
 const Portfolio = () => {
   const saleData = [
@@ -33,8 +35,7 @@ const Portfolio = () => {
     },
     {
       ID: 3,
-      Item:
-        "Sony PS5 PlayStation 5 (US Plug) Blu-ray Edition Console 3005718 White",
+      Item: "Sony PS5 PlayStation 5 (US Plug) Blu-ray Edition Console 3005718 White",
       Buyer: "Elize Tran",
     },
   ];
@@ -45,9 +46,32 @@ const Portfolio = () => {
     <IonPage>
       <IonGrid>
         <IonRow>
-          <JsonToTable json={saleData} />
+          <IonCol className="header" size="1">ID</IonCol>
+          <IonCol className="header" size="8">Item</IonCol>
+          <IonCol className="header" size="3">Buyer</IonCol>
         </IonRow>
         <IonItemDivider></IonItemDivider>
+        {saleData.map((sale) => (
+          <SaleTable
+            ID={sale.ID}
+            item={sale.Item}
+            buyer={sale.Buyer}
+          />
+        ))}
+        <IonItem>
+          <IonLabel>Duration</IonLabel>
+          <IonSelect
+            value={duration}
+            placeholder="Select One"
+            onIonChange={(e) => setDuration(e.detail.value)}
+          >
+            <IonSelectOption value="day">One Day</IonSelectOption>
+            <IonSelectOption value="week">One Week</IonSelectOption>
+            <IonSelectOption value="month">One Month</IonSelectOption>
+            <IonSelectOption value="year">One Year</IonSelectOption>
+            <IonSelectOption value="alltime">All Time</IonSelectOption>
+          </IonSelect>
+        </IonItem>
         <IonRow>
           <ChartViewer></ChartViewer>
         </IonRow>

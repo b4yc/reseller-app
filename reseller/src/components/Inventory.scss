@@ -1,9 +1,11 @@
-.json-to-table {
-    tr:nth-child(1) {
-        background-color: lightgray !important;
-        font-weight: bold !important;
-      }
-    tr:nth-child(even) {
-      background-color: white !important;
-    }  
+@import '../theme/variables.scss';
+
+.header {
+  background-color: lightgray;
+  font-weight: normal;
 }
+
+.textBox{
+  width: 100%
+}
+

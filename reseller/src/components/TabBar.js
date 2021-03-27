@@ -17,6 +17,7 @@ import {
 import { IonReactRouter } from "@ionic/react-router";
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import Dashboard from "./Dashboard";
 import Inventory from "./Inventory";
 import Account from "./Account";
 import Portfolio from "./Portfolio";
