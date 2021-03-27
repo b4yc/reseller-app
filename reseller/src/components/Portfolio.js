@@ -18,8 +18,9 @@ import TimeSeries from "fusioncharts/fusioncharts.timeseries";
 import ReactFC from "react-fusioncharts";
 import { JsonToTable } from "react-json-to-table";
 import ChartViewer from "./Chart";
-ReactFC.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries);
 import SaleTable from "./SaleTable";
+
+ReactFC.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries);
 
 const Portfolio = () => {
   const saleData = [
@@ -35,7 +36,8 @@ const Portfolio = () => {
     },
     {
       ID: 3,
-      Item: "Sony PS5 PlayStation 5 (US Plug) Blu-ray Edition Console 3005718 White",
+      Item:
+        "Sony PS5 PlayStation 5 (US Plug) Blu-ray Edition Console 3005718 White",
       Buyer: "Elize Tran",
     },
   ];
@@ -46,17 +48,19 @@ const Portfolio = () => {
     <IonPage>
       <IonGrid>
         <IonRow>
-          <IonCol className="header" size="1">ID</IonCol>
-          <IonCol className="header" size="8">Item</IonCol>
-          <IonCol className="header" size="3">Buyer</IonCol>
+          <IonCol className="header" size="1">
+            ID
+          </IonCol>
+          <IonCol className="header" size="8">
+            Item
+          </IonCol>
+          <IonCol className="header" size="3">
+            Buyer
+          </IonCol>
         </IonRow>
         <IonItemDivider></IonItemDivider>
         {saleData.map((sale) => (
-          <SaleTable
-            ID={sale.ID}
-            item={sale.Item}
-            buyer={sale.Buyer}
-          />
+          <SaleTable ID={sale.ID} item={sale.Item} buyer={sale.Buyer} />
         ))}
         <IonItem>
           <IonLabel>Duration</IonLabel>
