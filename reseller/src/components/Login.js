@@ -12,36 +12,64 @@ import {
   IonInput,
   IonItem,
   IonText,
+  IonAlert,
 } from "@ionic/react";
-import { React, Route, Redirect, useState } from "react";
+import { React, Route, Redirect, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { IonReactRouter } from "@ionic/react-router";
 import PropTypes from "prop-types";
 import Dashboard from "./Dashboard";
+import axios from "axios";
 
 import "./authenticate.css";
 
-async function loginUser(credentials) {
-  return fetch("http://localhost:8080/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(credentials),
-  }).then((data) => data.json());
+function validateEmail(email) {
+  const re = /^((?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))$/;
+  return re.test(String(email).toLowerCase());
 }
 
 const Login = ({ setToken }) => {
+  const history = useHistory();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const token = await loginUser({
-      email,
-      password,
+  const handleLogin = () => {
+    if (!email) {
+      setMessage("Please enter a valid email");
+      setError(true);
+      return;
+    }
+    if (validateEmail(email) === false) {
+      setMessage("Your email is invalid");
+      setError(true);
+      return;
+    }
+
+    if (!password) {
+      setMessage("Please enter your password");
+      setError(true);
+      return;
+    }
+
+    const loginData = {
+      email: email,
+      password: password,
+    };
+
+    const api = axios.create({
+      baseURL: `http://127.0.0.1:8000`,
     });
-    setToken(token);
+    api
+      .post("/sellers", loginData)
+      .then((res) => {
+        history.push("/dashboard/" + email);
+      })
+      .catch((error) => {
+        setMessage("Auth failure! Please create an account");
+        setError(true);
+      });
   };
 
   return (
@@ -52,34 +80,37 @@ const Login = ({ setToken }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="authenticate">
-        <form onSubmit={handleSubmit}>
-          <IonItem>
-            <IonLabel>Email</IonLabel>
-            <IonInput
-              value={email}
-              placeholder="email"
-              onIonChange={(e) => setEmail(e.detail.value)}
-            ></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Password</IonLabel>
-            <IonInput
-              value={password}
-              placeholder="password"
-              onIonChange={(e) => setPassword(e.detail.value)}
-            ></IonInput>
-          </IonItem>
-          <IonButton href="/dashboard">Login </IonButton>
-        </form>
+        <IonAlert
+          isOpen={error}
+          onDidDismiss={() => setError(false)}
+          cssClass="my-custom-class"
+          header={"Error!"}
+          message={message}
+          buttons={["Dismiss"]}
+        />
+        <IonItem>
+          <IonLabel>Email</IonLabel>
+          <IonInput
+            value={email}
+            placeholder="email"
+            onIonChange={(e) => setEmail(e.detail.value)}
+          ></IonInput>
+        </IonItem>
+        <IonItem>
+          <IonLabel>Password</IonLabel>
+          <IonInput
+            value={password}
+            placeholder="password"
+            onIonChange={(e) => setPassword(e.detail.value)}
+          ></IonInput>
+        </IonItem>
+        <IonButton onClick={handleLogin}>Login </IonButton>
+        {/* <IonButton href="/dashboard">Login </IonButton> */}
         <IonItem>Don't have an account?</IonItem>
         <IonButton href="/register">Register</IonButton>
       </IonContent>
     </IonPage>
   );
-};
-
-Login.propTypes = {
-  setToken: PropTypes.func.isRequired,
 };
 
 export default Login;
