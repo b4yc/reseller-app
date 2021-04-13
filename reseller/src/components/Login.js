@@ -62,14 +62,13 @@ const Login = ({ setToken }) => {
       baseURL: `http://127.0.0.1:8000/api`,
     });
     api
-      .get("/sellers/", {params: loginData} )
+      .get("/sellers/", { params: loginData })
       .then((res) => {
-
-        history.push("/portfolio/" + email);
-        console.log(res.data);
+        history.push("/portfolio/" + res.data[0]["id"]);
+        console.log(res.data[0]["id"]);
       })
       .catch((error) => {
-        console.log(error.response)
+        console.log(error.response);
         setMessage("Incorrect email or password. Have you made an account?");
         setError(true);
       });
@@ -94,6 +93,7 @@ const Login = ({ setToken }) => {
         <IonItem>
           <IonLabel>Email</IonLabel>
           <IonInput
+            tyoe="email"
             value={email}
             placeholder="email"
             onIonChange={(e) => setEmail(e.detail.value)}
@@ -102,13 +102,13 @@ const Login = ({ setToken }) => {
         <IonItem>
           <IonLabel>Password</IonLabel>
           <IonInput
+            type="password"
             value={password}
             placeholder="password"
             onIonChange={(e) => setPassword(e.detail.value)}
           ></IonInput>
         </IonItem>
         <IonButton onClick={handleLogin}>Login </IonButton>
-        {/* <IonButton href="/dashboard">Login </IonButton> */}
         <IonItem>Don't have an account?</IonItem>
         <IonButton href="/register">Register</IonButton>
       </IonContent>

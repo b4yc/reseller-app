@@ -59,7 +59,7 @@ const Register = () => {
       return;
     }
 
-        if (!lname) {
+    if (!lname) {
       setMessage("Please enter your last name");
       setError(true);
       return;
@@ -76,14 +76,13 @@ const Register = () => {
       baseURL: `http://127.0.0.1:8000/api`,
     });
     api
-      .post("/sellers/", registerData )
+      .post("/sellers/", registerData)
       .then((res) => {
-
         history.push("/portfolio/" + email);
         console.log(res.data);
       })
       .catch((error) => {
-        console.log(error.response)
+        console.log(error.response);
         setMessage("Email already has an account.");
         setError(true);
       });
@@ -118,6 +117,7 @@ const Register = () => {
             <IonItem>
               <IonLabel>Email</IonLabel>
               <IonInput
+                type="email"
                 value={email}
                 placeholder="email"
                 onIonChange={(e) => setEmail(e.detail.value)}
@@ -126,12 +126,14 @@ const Register = () => {
             <IonItem>
               <IonLabel>Password</IonLabel>
               <IonInput
+                type="password"
                 value={password}
                 placeholder="password"
                 onIonChange={(e) => setPassword(e.detail.value)}
               ></IonInput>
             </IonItem>
-            <IonButton onClick={handleRegister}>Register</IonButton> {/* type="submit" */}
+            <IonButton onClick={handleRegister}>Register</IonButton>{" "}
+            {/* type="submit" */}
           </form>
           <IonItem>Already have an account?</IonItem>
           <IonButton href="/login">Sign In</IonButton>

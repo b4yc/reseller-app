@@ -15,8 +15,8 @@ import {
   IonButton,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { History } from 'history'
-import { useHistory } from 'react-router'
+import { History } from "history";
+import { useHistory } from "react-router";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -51,6 +51,7 @@ const App = () => {
           <Route path="/portfolio" component={Dashboard} />
           <Route path="/account" component={Dashboard} />
           <Route path="/inventory" component={Dashboard} />
+          <Route exact path="/" render={() => <Redirect to="/login" />} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

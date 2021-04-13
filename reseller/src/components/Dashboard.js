@@ -25,14 +25,16 @@ import TabBar from "./TabBar";
 const Dashboard = () => {
   return (
     <IonApp>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>ReZellers</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <TabBar />
-      </IonContent>
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>ReZellers</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <TabBar />
+        </IonContent>
+      </IonPage>
     </IonApp>
   );
 };
