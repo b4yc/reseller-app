@@ -93,7 +93,7 @@ const Login = ({ setToken }) => {
         <IonItem>
           <IonLabel>Email</IonLabel>
           <IonInput
-            tyoe="email"
+            type="email"
             value={email}
             placeholder="email"
             onIonChange={(e) => setEmail(e.detail.value)}
