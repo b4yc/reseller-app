@@ -22,24 +22,25 @@ import Inventory from "./Inventory";
 import Account from "./Account";
 import Portfolio from "./Portfolio";
 
-const TabBar = () => {
+const TabBar = (props) => {
+  console.log(props.id);
   return (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route path="/:tab(portfolio)" component={Portfolio} exact={true} />
-          <Route path="/:tab(account)" component={Account} exact />
-          <Route path="/:tab(inventory)" component={Inventory} exact />
+          <Route path="/:tab(portfolio)" component={Portfolio} />
+          <Route path="/:tab(account)" component={Account} />
+          <Route path="/:tab(inventory)" component={Inventory} />
           <Route exact path="/" render={() => <Redirect to="/account" />} />
         </IonRouterOutlet>
         <IonTabBar slot="top">
-          <IonTabButton tab="account" href="/account">
+          <IonTabButton tab="account" href={`/account/${props.id}`}>
             <IonLabel>Account</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="portfolio" href="/portfolio">
+          <IonTabButton tab="portfolio" href={`/portfolio/${props.id}`}>
             <IonLabel>Portfolio</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="inventory" href="/inventory">
+          <IonTabButton tab="inventory" href={`/inventory/${props.id}`}>
             <IonLabel>Inventory</IonLabel>
           </IonTabButton>
         </IonTabBar>

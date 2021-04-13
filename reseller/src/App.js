@@ -47,7 +47,7 @@ const App = () => {
         <IonRouterOutlet>
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
-          <Route path="/dashboard:id" component={Dashboard} />
+          <Route path="/dashboard" component={Dashboard} />
           <Route path="/portfolio" component={Dashboard} />
           <Route path="/account" component={Dashboard} />
           <Route path="/inventory" component={Dashboard} />
