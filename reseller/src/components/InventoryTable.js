@@ -8,12 +8,14 @@ import {
   IonRouterLink,
   IonSelect,
   IonContent,
+  IonAlert
 } from "@ionic/react";
 import React, { useState } from "react";
 import {EditText} from 'react-edit-text';
 import "./Table.scss";
 
 const InventoryTable = ({ ID, name, bprice, sprice, category, status }) => {
+  const [showItemAlert, setShowItemAlert] = useState(false);
   const [status1, setStatus] = useState(status);
   const [category1, setCategory] = useState(category);
   const [bprice1, setBPrice] = useState(bprice.toFixed(2));
@@ -50,9 +52,21 @@ const InventoryTable = ({ ID, name, bprice, sprice, category, status }) => {
     <IonRow>
       <IonCol className="col" size="0.5">{ID}</IonCol>
       <IonCol className="nameCol" size="4">
-        <IonRouterLink data-toggle="modal" data-target="#myModal" href={"/inventory/" + ID}>
-          {name}
+        <IonRouterLink 
+          data-toggle="modal" 
+          data-target="#myModal" 
+          onClick={() => setShowItemAlert(true)}>
+            {name}
         </IonRouterLink>
+        <IonAlert
+          isOpen={showItemAlert}
+          onDidDismiss={() => setShowItemAlert(false)}
+          cssClass='my-custom-class'
+          header={'Alert'}
+          subHeader={'Subtitle'}
+          message={'This is an alert message.'}
+          buttons={['OK']}
+        />
       </IonCol>
       <IonCol className="col" size="1.5">
         <EditText
