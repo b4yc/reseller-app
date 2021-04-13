@@ -15,6 +15,8 @@ import {
   IonButton,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
+import { History } from 'history'
+import { useHistory } from 'react-router'
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";

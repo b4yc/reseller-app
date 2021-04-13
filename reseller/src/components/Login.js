@@ -59,15 +59,18 @@ const Login = ({ setToken }) => {
     };
 
     const api = axios.create({
-      baseURL: `http://127.0.0.1:8000`,
+      baseURL: `http://127.0.0.1:8000/api`,
     });
     api
-      .post("/sellers", loginData)
+      .get("/sellers/", {params: loginData} )
       .then((res) => {
-        history.push("/dashboard/" + email);
+
+        history.push("/portfolio/" + email);
+        console.log(res.data);
       })
       .catch((error) => {
-        setMessage("Auth failure! Please create an account");
+        console.log(error.response)
+        setMessage("Incorrect email or password. Have you made an account?");
         setError(true);
       });
   };

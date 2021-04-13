@@ -10,6 +10,17 @@ class SellerViewset(viewsets.ModelViewSet):
     ]
     serializer_class = SellerSerializer
 
+    def get_queryset(self):
+        queryset = Seller.objects.all()
+        email = self.request.query_params.get('email')
+        password = self.request.query_params.get('password')
+        if email is not None and password is not None:
+            queryset = queryset.filter(email=email, password=password)
+        if queryset:
+            return queryset
+        else:
+            raise NotFound()
+
 class BuyerViewset(viewsets.ModelViewSet):
     queryset = Buyer.objects.all()
     permission_classes = [
