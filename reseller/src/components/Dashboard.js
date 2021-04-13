@@ -23,6 +23,9 @@ import Portfolio from "./Portfolio";
 import TabBar from "./TabBar";
 
 const Dashboard = () => {
+  const url = window.location.href;
+  const lastSegment = url.split("/").pop();
+
   return (
     <IonApp>
       <IonPage>
@@ -32,7 +35,7 @@ const Dashboard = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          <TabBar />
+          <TabBar id={lastSegment} />
         </IonContent>
       </IonPage>
     </IonApp>

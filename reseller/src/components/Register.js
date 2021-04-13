@@ -78,7 +78,7 @@ const Register = () => {
     api
       .post("/sellers/", registerData)
       .then((res) => {
-        history.push("/portfolio/" + email);
+        history.push("/portfolio/" + res.data[0]["id"]);
         console.log(res.data);
       })
       .catch((error) => {

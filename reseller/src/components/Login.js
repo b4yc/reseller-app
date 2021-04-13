@@ -64,7 +64,7 @@ const Login = ({ setToken }) => {
     api
       .get("/sellers/", { params: loginData })
       .then((res) => {
-        history.push("/portfolio/" + res.data[0]["id"]);
+        history.push("/dashboard/" + res.data[0]["id"]);
         console.log(res.data[0]["id"]);
       })
       .catch((error) => {
