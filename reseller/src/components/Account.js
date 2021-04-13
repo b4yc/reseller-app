@@ -1,5 +1,5 @@
-import { IonGrid, IonPage, IonRow, IonButton, IonCard } from "@ionic/react";
-import React from "react";
+import { IonGrid, IonPage, IonRow, IonButton, IonCard, IonAlert, IonItem, IonLabel, IonInput } from "@ionic/react";
+import React, { useState } from "react";
 import EdiTextArea from 'react-editext'
 import {Link} from "react-router-dom";
 import "./Account.scss"
@@ -16,6 +16,10 @@ const Account = () => {
     }
   ];
 
+  const [showPasswordAlert, setShowPasswordAlert] = useState(false);
+  const [oldPass, setOldPass] = useState(false);
+  const [newPass1, setNewPass1] = useState(false);
+  const [newPass2, setNewPass2] = useState(false);
   // const handleSave = val => {
   //   setBPrice(val)
   // }
@@ -53,19 +57,48 @@ const Account = () => {
             />))}
         </IonCard>
         </IonRow>
-        <IonRow> Address </IonRow>
-        <IonRow>
-          <IonCard className="sellerCard">
-            {seller.map((s) => (
-              <EdiTextArea 
-                className="editText"
-                value={s.Address}
-            />))}
-        </IonCard>
-        </IonRow>
         <IonRow> Password </IonRow>
         <IonRow>
-          <IonButton>Change Password</IonButton>
+          <IonButton onClick={() => setShowPasswordAlert(true)} >Change Password</IonButton>
+          <IonAlert
+          isOpen={showPasswordAlert}
+          onDidDismiss={() => setShowPasswordAlert(false)}
+          cssClass='my-custom-class'
+          header={'Change Password'}
+          inputs={[
+            {
+              name: 'Old Password',
+              type: 'text',
+              placeholder: 'Old Password'
+            },
+            {
+              name: 'New Password',
+              type: 'text',
+              placeholder: 'New Password'
+            },
+            {
+              name: 'Confim New Password',
+              typ: 'text',
+              placeholder: 'Confirm New Password'
+            }
+          ]}
+          buttons={[
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                console.log('Confirm Cancel');
+              }
+            },
+            {
+              text: 'Save',
+              handler: () => {
+                console.log('Confirm Save');
+              }
+            }
+          ]}
+        />
         </IonRow>
         <IonRow size="2"></IonRow>
         
