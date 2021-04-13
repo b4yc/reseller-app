@@ -36,8 +36,8 @@ class Item(models.Model):
     ]
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, null=True)
     status = models.CharField(max_length=100, choices = STATUS_CHOICES, default=AVAILABLE)
-    askingPrice = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
-    boughtPrice = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    askingPrice = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    boughtPrice = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     name = models.CharField(max_length=255, null=True)
     model = models.CharField(max_length=255, null=True)
 
