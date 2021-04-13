@@ -17,7 +17,7 @@ class SellerViewset(viewsets.ModelViewSet):
         id = self.request.query_params.get('id')
         if email is not None and password is not None:
             queryset = queryset.filter(email=email, password=password)
-        else:
+        elif id is not None:
             queryset = queryset.filter(id=id)
         if queryset:
             return queryset
