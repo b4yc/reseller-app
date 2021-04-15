@@ -49,13 +49,13 @@ class Item(models.Model):
     name = models.CharField(max_length=255, null=True)
     model = models.CharField(max_length=255, null=True)
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, null=True)
+    brand = models.CharField(max_length=255, null=True)
 
     def __str__(self):
         return "{name}".format(name = self.name)
 
 
 class Electronic(Item):
-    brand = models.CharField(max_length=255)
 
     def __str__(self):
         return "Model: {model} Brand: {brand} Price: {askingPrice}".format(askingPrice = self.askingPrice,
@@ -85,7 +85,6 @@ class Shoe(Item):
         ('13', '13'),
     ]
         
-    brand = models.CharField(max_length=255)
     size = models.CharField(max_length=100, choices = SIZE_CHOICES, default='4')
 
     def __str__(self):
@@ -94,7 +93,6 @@ class Shoe(Item):
 
 
 class Card(Item):
-    brand = models.CharField(max_length=255)
     year = models.IntegerField()
 
     def __str__(self):
