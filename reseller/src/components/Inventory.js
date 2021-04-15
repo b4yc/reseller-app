@@ -86,13 +86,13 @@ const Inventory = () => {
         {items.map((item) => (
           <InventoryTable
             name={item.name}
+            model={item.model}
+            brand={item.brand}
             bprice={item.boughtPrice}
             sprice={item.askingPrice}
             ID={item.id}
             category={item.category}
             status={item.status.toString()}
-            size={item.size}
-            year={item.year}
           />
         ))}
       </IonGrid>
