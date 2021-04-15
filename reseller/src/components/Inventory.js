@@ -4,13 +4,17 @@ import {
   IonGrid,
   IonPage,
   IonButton,
-  IonAlert,
+  IonList,
   IonModal,
   IonContent,
+  IonItem,
+  IonInput,
+  IonLabel,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 
-import { JsonToTable } from "react-json-to-table";
 import InventoryTable from "./InventoryTable";
 import "./Inventory.scss";
 import axios from "axios";
@@ -18,69 +22,21 @@ import axios from "axios";
 const Inventory = () => {
   const [items, setItems] = useState([]);
   const [showAddItem, setShowAddItem] = useState(false);
-  const data = [
-    {
-      ID: 1,
-      Name: "2021 Pokemon TCG Sword & Shield Shining Fates Elite Trainer Box",
-      BoughtPrice: 64.99,
-      SoldPrice: 102.0,
-      Category: "Card",
-      Status: "Sold",
-    },
-    {
-      ID: 2,
-      Name: "Jordan 1 Retro High Patina",
-      BoughtPrice: 170.0,
-      SoldPrice: 0.0,
-      Category: "Shoe",
-      Status: "Available",
-    },
-    {
-      ID: 3,
-      Name:
-        "Sony PS5 PlayStation 5 (US Plug) Blu-ray Edition Console 3005718 White",
-      BoughtPrice: 499.99,
-      SoldPrice: 906.0,
-      Category: "Electronic",
-      Status: "Shipped",
-    },
-  ];
+  const [category, setCategory] = useState();
+  const [name, setName] = useState("");
+  const [model, setModel] = useState("");
+  const [brand, setBrand] = useState("");
+  const [size, setSize] = useState("");
+  const [year, setYear] = useState();
+  const [boughtPrice, setBoughtPrice] = useState();
+  const [askingPrice, setAskingPrice] = useState();
 
   const url = window.location.href;
   const id = url.split("/").pop();
 
-  // useEffect(() => {
-  //   let ignore = false;
-
-  //   if (!ignore) {
-  //     const sellerData = {
-  //       id: id,
-  //     };
-
-  //     const api = axios.create({
-  //       baseURL: `http://127.0.0.1:8000/api`,
-  //     });
-  //     console.log("hi");
-
-  //     api
-  //       .get("/items/", { params: sellerData })
-  //       .then((res) => {
-  //         setItems(res.data);
-  //         console.log(res.data);
-  //         console.log(items);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error.response);
-  //       });
-  //   }
-  //   return () => {
-  //     ignore = true;
-  //   };
-  // }, []);
-
   useEffect(() => {
     retrieveItems();
-  }, []);
+  });
 
   const retrieveItems = () => {
     const sellerData = {
@@ -153,6 +109,102 @@ const Inventory = () => {
           onDidDismiss={() => setShowAddItem(false)}
         >
           <h1>Add Item</h1>
+          <IonList>
+            <IonItem>
+              <IonLabel>Category</IonLabel>
+              <IonSelect
+                type='text'
+                value={category}
+                placeholder='Select One'
+                onIonChange={(e) => setCategory(e.detail.value)}
+              >
+                <IonSelectOption value='ELECTRONICS'>
+                  Electronic
+                </IonSelectOption>
+                <IonSelectOption value='SHOE'>Shoe</IonSelectOption>
+                <IonSelectOption value='CARD'>Card</IonSelectOption>
+              </IonSelect>
+            </IonItem>
+            <IonItem>
+              <IonInput
+                type='text'
+                value={name}
+                placeholder='Name'
+                maxlength='255'
+                onIonChange={(e) => setName(e.detail.value)}
+              ></IonInput>
+            </IonItem>
+            <IonItem>
+              <IonInput
+                type='text'
+                value={model}
+                placeholder='Model'
+                maxlength='255'
+                onIonChange={(e) => setModel(e.detail.value)}
+              ></IonInput>
+            </IonItem>
+            <IonItem>
+              <IonInput
+                type='text'
+                value={brand}
+                placeholder='Brand'
+                maxlength='255'
+                onIonChange={(e) => setBrand(e.detail.value)}
+              ></IonInput>
+            </IonItem>
+            <IonItem hidden={category !== "CARD"}>
+              <IonInput
+                type='number'
+                value={year}
+                placeholder='Year'
+                onIonChange={(e) => setYear(parseInt(e.detail.value))}
+              ></IonInput>
+            </IonItem>
+            <IonItem hidden={category !== "SHOE"}>
+              <IonLabel>Size</IonLabel>
+              <IonSelect
+                type='text'
+                value={size}
+                placeholder='Select a Size'
+                onIonChange={(e) => setSize(e.detail.value)}
+              >
+                <IonSelectOption value='4'>4</IonSelectOption>
+                <IonSelectOption value='4.5'>4.5</IonSelectOption>
+                <IonSelectOption value='5'>5</IonSelectOption>
+                <IonSelectOption value='6'>6</IonSelectOption>
+                <IonSelectOption value='6.5'>6.5</IonSelectOption>
+                <IonSelectOption value='7'>7</IonSelectOption>
+                <IonSelectOption value='7.5'>7.5</IonSelectOption>
+                <IonSelectOption value='8'>8</IonSelectOption>
+                <IonSelectOption value='8.5'>8.5</IonSelectOption>
+                <IonSelectOption value='9'>9</IonSelectOption>
+                <IonSelectOption value='9.5'>9.5</IonSelectOption>
+                <IonSelectOption value='10'>10</IonSelectOption>
+                <IonSelectOption value='10.5'>10.5</IonSelectOption>
+                <IonSelectOption value='11'>11</IonSelectOption>
+                <IonSelectOption value='11.5'>11.5</IonSelectOption>
+                <IonSelectOption value='12'>12</IonSelectOption>
+                <IonSelectOption value='12.5'>12.5</IonSelectOption>
+                <IonSelectOption value='13'>13</IonSelectOption>
+              </IonSelect>
+            </IonItem>
+            <IonItem>
+              <IonInput
+                type='number'
+                value={boughtPrice}
+                placeholder='Bought Price'
+                onIonChange={(e) => setBoughtPrice(e.detail.value)}
+              ></IonInput>
+            </IonItem>
+            <IonItem>
+              <IonInput
+                type='number'
+                value={askingPrice}
+                placeholder='Asking Price'
+                onIonChange={(e) => setAskingPrice(parseFloat(e.detail.value))}
+              ></IonInput>
+            </IonItem>
+          </IonList>
           <IonGrid>
             <IonRow>
               <IonCol size='6'>

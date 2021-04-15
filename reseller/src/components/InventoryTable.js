@@ -1,13 +1,9 @@
 import {
   IonCol,
   IonRow,
-  IonGrid,
-  IonItem,
-  IonLabel,
   IonSelectOption,
   IonRouterLink,
   IonSelect,
-  IonContent,
   IonAlert,
 } from "@ionic/react";
 import React, { useState } from "react";
@@ -23,10 +19,10 @@ const InventoryTable = ({ ID, name, bprice, sprice, category, status }) => {
 
   const [showBuyer, setShowBuyer] = useState(false);
 
-  const formatter = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+  // const formatter = new Intl.NumberFormat("en-US", {
+  //   minimumFractionDigits: 2,
+  //   maximumFractionDigits: 2,
+  // });
 
   const handleChangeB = (val) => {
     setBPrice(val);
