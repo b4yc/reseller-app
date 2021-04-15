@@ -36,7 +36,7 @@ const Inventory = () => {
 
   useEffect(() => {
     retrieveItems();
-  });
+  }, []);
 
   const retrieveItems = () => {
     const sellerData = {
@@ -91,6 +91,8 @@ const Inventory = () => {
             ID={item.id}
             category={item.category}
             status={item.status.toString()}
+            size={item.size}
+            year={item.year}
           />
         ))}
       </IonGrid>

@@ -9,6 +9,7 @@ import {
 import React, { useState } from "react";
 import { EditText } from "react-edit-text";
 import "./Table.scss";
+import axios from "axios";
 
 const InventoryTable = ({ ID, name, bprice, sprice, category, status }) => {
   const [showItemAlert, setShowItemAlert] = useState(false);
@@ -16,8 +17,8 @@ const InventoryTable = ({ ID, name, bprice, sprice, category, status }) => {
   const [category1, setCategory] = useState(category);
   const [bprice1, setBPrice] = useState(bprice);
   const [sprice1, setSPrice] = useState(sprice);
-
   const [showBuyer, setShowBuyer] = useState(false);
+  const [size, setSize] = useState();
 
   // const formatter = new Intl.NumberFormat("en-US", {
   //   minimumFractionDigits: 2,
@@ -46,6 +47,26 @@ const InventoryTable = ({ ID, name, bprice, sprice, category, status }) => {
     cssClass: "dropdown-interface",
   };
 
+  function retrieveShoeSize(itemID) {
+    const api = axios.create({
+      baseURL: "http://127.0.0.1:8000/api",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    api
+      .get(`/shoes/${itemID}`)
+      .then((response) => {
+        setSize(response.data.size);
+        setShowItemAlert(true);
+        console.log(size);
+      })
+      .catch((e) => console.log(e));
+  }
+
+  let year;
+
   return (
     <IonRow>
       <IonCol className='col' size='0.5'>
@@ -55,17 +76,23 @@ const InventoryTable = ({ ID, name, bprice, sprice, category, status }) => {
         <IonRouterLink
           data-toggle='modal'
           data-target='#myModal'
-          onClick={() => setShowItemAlert(true)}
+          onClick={() => {
+            if (category === "SHOE") {
+              retrieveShoeSize(ID);
+            }
+          }}
         >
           {name}
         </IonRouterLink>
         <IonAlert
           isOpen={showItemAlert}
-          onDidDismiss={() => setShowItemAlert(false)}
+          onDidDismiss={() => {
+            setShowItemAlert(false);
+          }}
           cssClass='my-custom-class'
-          header={"Alert"}
+          header={"Info"}
           subHeader={"Subtitle"}
-          message={"This is an alert message."}
+          message={size}
           buttons={["OK"]}
         />
       </IonCol>

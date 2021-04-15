@@ -62,6 +62,17 @@ class ShoeViewset(viewsets.ModelViewSet):
     ]
     serializer_class = ShoeSerializer
 
+    def get_queryset(self):
+        queryset = Shoe.objects.all()
+        id = self.request.query_params.get('id')
+        if id is not None:
+            queryset = queryset.filter(id=id)
+        if queryset:
+            return queryset
+        else:
+            raise NotFound()
+
+
 class CardViewset(viewsets.ModelViewSet):
     queryset = Card.objects.all()
     permission_classes = [
