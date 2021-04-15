@@ -1,4 +1,13 @@
-import { IonCol, IonRow, IonGrid, IonPage } from "@ionic/react";
+import {
+  IonCol,
+  IonRow,
+  IonGrid,
+  IonPage,
+  IonButton,
+  IonAlert,
+  IonModal,
+  IonContent,
+} from "@ionic/react";
 import React, { useState, useEffect } from "react";
 
 import { JsonToTable } from "react-json-to-table";
@@ -8,6 +17,7 @@ import axios from "axios";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
+  const [showAddItem, setShowAddItem] = useState(false);
   const data = [
     {
       ID: 1,
@@ -108,7 +118,7 @@ const Inventory = () => {
             Bought Price
           </IonCol>
           <IonCol className='header' size='1.5'>
-            Sold Price
+            Asking/ Sold Price
           </IonCol>
           <IonCol className='header' size='2'>
             Category
@@ -128,6 +138,45 @@ const Inventory = () => {
           />
         ))}
       </IonGrid>
+      <IonButton
+        onClick={() => {
+          setShowAddItem(true);
+        }}
+        className='addBtn'
+      >
+        Add Item
+      </IonButton>
+      <IonContent>
+        <IonModal
+          isOpen={showAddItem}
+          cssClass='my-custom-class'
+          onDidDismiss={() => setShowAddItem(false)}
+        >
+          <h1>Add Item</h1>
+          <IonGrid>
+            <IonRow>
+              <IonCol size='6'>
+                <IonButton
+                  expand='full'
+                  onClick={() => setShowAddItem(false)}
+                  className='closeBtn'
+                >
+                  Close
+                </IonButton>
+              </IonCol>
+              <IonCol size='6'>
+                <IonButton
+                  expand='full'
+                  onClick={() => setShowAddItem(false)}
+                  className='saveBtn'
+                >
+                  Save
+                </IonButton>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonModal>
+      </IonContent>
     </IonPage>
   );
 };

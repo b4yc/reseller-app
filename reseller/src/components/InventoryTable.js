@@ -21,6 +21,8 @@ const InventoryTable = ({ ID, name, bprice, sprice, category, status }) => {
   const [bprice1, setBPrice] = useState(bprice);
   const [sprice1, setSPrice] = useState(sprice);
 
+  const [showBuyer, setShowBuyer] = useState(false);
+
   const formatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -102,8 +104,57 @@ const InventoryTable = ({ ID, name, bprice, sprice, category, status }) => {
       <IonCol size='2'>
         <IonSelect
           value={status1}
-          onIonChange={(e) => setStatus(e.detail.value)}
+          onIonChange={(e) => {
+            setStatus(e.detail.value);
+            if (e.detail.value === "SOLD") {
+              setShowBuyer(true);
+            }
+          }}
         >
+          <IonAlert
+            isOpen={showBuyer}
+            onDidDismiss={() => setShowBuyer(false)}
+            cssClass='my-custom-class'
+            header={"Buyer Information"}
+            inputs={[
+              {
+                name: "First Name",
+                type: "text",
+                placeholder: "First Name",
+              },
+              {
+                name: "Last Name",
+                type: "text",
+                placeholder: "Last Name",
+              },
+              {
+                name: "Email",
+                typ: "text",
+                placeholder: "Email",
+              },
+              {
+                name: "Address",
+                typ: "text",
+                placeholder: "Address",
+              },
+            ]}
+            buttons={[
+              {
+                text: "Cancel",
+                role: "cancel",
+                cssClass: "secondary",
+                handler: () => {
+                  console.log("Confirm Cancel");
+                },
+              },
+              {
+                text: "Save",
+                handler: () => {
+                  console.log("Confirm Save");
+                },
+              },
+            ]}
+          />
           <IonSelectOption value='AVAILABLE'>Available</IonSelectOption>
           <IonSelectOption value='DELIVERED'>Delivered</IonSelectOption>
           <IonSelectOption value='SHIPPED'>Shipped</IonSelectOption>
