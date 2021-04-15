@@ -38,6 +38,16 @@ class ItemViewset(viewsets.ModelViewSet):
     ]
     serializer_class = ItemSerializer
 
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        id = self.request.query_params.get('id')
+        if id is not None:
+            queryset = queryset.filter(seller=id)
+        if queryset:
+            return queryset
+        else:
+            raise NotFound()
+
 class ElectronicViewset(viewsets.ModelViewSet):
     queryset = Electronic.objects.all()
     permission_classes = [

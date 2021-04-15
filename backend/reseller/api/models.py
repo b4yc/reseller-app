@@ -34,12 +34,21 @@ class Item(models.Model):
         (SHIPPED, 'Shipped'),
         (DELIVERED, 'Delivered'),
     ]
+    ELECTRONICS = 'ELECTRONICS'
+    SHOE = 'SHOE'
+    CARD = 'CARD'
+    CATEGORY_CHOICES = [
+        (ELECTRONICS, 'Electronics'),
+        (SHOE, 'Shoe'),
+        (CARD, 'Card'),
+    ]
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, null=True)
     status = models.CharField(max_length=100, choices = STATUS_CHOICES, default=AVAILABLE)
     askingPrice = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     boughtPrice = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     name = models.CharField(max_length=255, null=True)
     model = models.CharField(max_length=255, null=True)
+    category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, null=True)
 
     def __str__(self):
         return "{name}".format(name = self.name)
