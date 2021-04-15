@@ -16,28 +16,43 @@ import "./Account.scss"
 import axios from "axios";
 
 const Account = () => {
-  // const seller = [
-  //   {
-  //     ID: 1,
-  //     FName: "Thomas",
-  //     LName: "Kahessay",
-  //     Email: "tko@gmail.com",
-  //     Password: "123",
-  //     Address: "Under There",
-  //   }
-  // ];
-
   const [seller, setSeller] = useState([]);
   const [showPasswordAlert, setShowPasswordAlert] = useState(false);
-  const [oldPass, setOldPass] = useState(false);
-  const [newPass1, setNewPass1] = useState(false);
-  const [newPass2, setNewPass2] = useState(false);
 
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
 
   const url = window.location.href;
   const id = url.split("/").pop();
+
+  const api = axios.create({
+    baseURL: `http://127.0.0.1:8000/api`,
+  });
+
+  function validateEmail(email) {
+    if (!email) {
+      setMessage("Nothing was entered");
+      setError(true);
+      return false;
+    }
+    const re = /^((?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))$/;
+    if(!re.test(String(email).toLowerCase())) {
+      setMessage("Your email is invalid");
+      setError(true);
+      return false;
+    }
+    return true;
+  }
+
+  function validateName(name) {
+    if (!name) {
+      setMessage("Nothing was entered");
+      setError(true);
+      console.log(seller[0])
+      return false;
+    }
+    return true;
+  }
 
   useEffect(() => {
     let ignore = false;
@@ -46,24 +61,117 @@ const Account = () => {
         id: id,
       };
 
-      const api = axios.create({
-        baseURL: `http://127.0.0.1:8000/api`,
-      });
       api
         .get("/sellers/", { params: userData })
         .then((res) => {
           setSeller(res.data);
-          console.log(res.data);
-          console.log("seller: ", seller);
         })
         .catch((error) => {
-          console.log(error.response);
+          console.log(error)
         });
       return () => {
         ignore = true;
       };
     }
   }, []);
+
+  const handlePasswordChange = (passwordData) => {
+    if (!passwordData.oldPassword) {
+      setMessage("Please enter current password");
+      setError(true);
+      return;
+    }
+    if (!passwordData.newPassword1) {
+      setMessage("Please enter your new password");
+      setError(true);
+      return;
+    }
+    if (!passwordData.newPassword2) {
+      setMessage("Please confirm your new password");
+      setError(true);
+      return;
+    }
+    if (passwordData.newPassword1.localeCompare(passwordData.newPassword2) != 0) {
+      setMessage("Passwords do not match");
+      setError(true);
+      return;
+    }
+    if(passwordData.oldPassword.localeCompare(seller[0]["password"])) {
+      setMessage("Incorrect old password");
+      setError(true);
+      return;
+    }
+
+    seller[0]["password"] = passwordData.newPassword1
+
+    api
+      .patch("/sellers/" + seller[0]["id"] + "/", { password: passwordData.newPassword1 })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error.response);
+        setMessage("Oops! Something went wrong.")
+        setError(true);
+      });
+  };
+
+  const handleFNameChange = (fname) => {
+    seller[0]["firstName"] = fname
+
+    const fnameData = {
+      firstName: fname
+    }
+
+    api
+      .patch("/sellers/" + seller[0]["id"] + "/", fnameData)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error.response);
+        setMessage("Oops! Something went wrong.")
+        setError(true);
+      });
+  };
+
+  const handleLNameChange = (lname) => {
+    seller[0]["lastName"] = lname
+
+    const lnameData = {
+      lastName: lname
+    }
+
+    api
+      .patch("/sellers/" + seller[0]["id"] + "/", lnameData)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error.response);
+        setMessage("Oops! Something went wrong.")
+        setError(true);
+      });
+  };
+
+  const handleEmailChange = (email) => {
+    seller[0]["email"] = email
+
+    const emailData = {
+      email: email
+    }
+
+    api
+      .patch("/sellers/" + seller[0]["id"] + "/", emailData)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error.response);
+        setMessage("Oops! Something went wrong.")
+        setError(true);
+      });
+  };
 
   return (
     <IonPage className="accountPage">
@@ -75,6 +183,8 @@ const Account = () => {
               <EdiTextArea 
                 className="editText"
                 value={s.firstName}
+                validation={validateName}
+                onSave={handleFNameChange}
             />))}
           </IonCard>
         </IonRow>
@@ -85,6 +195,8 @@ const Account = () => {
               <EdiTextArea 
                 className="editText"
                 value={s.lastName}
+                validation={validateName}
+                onSave={handleLNameChange}
             />))}
           </IonCard>
         </IonRow>
@@ -95,6 +207,8 @@ const Account = () => {
               <EdiTextArea 
                 className="editText"
                 value={s.email}
+                validation={validateEmail}
+                onSave={handleEmailChange}
             />))}
         </IonCard>
         </IonRow>
@@ -108,18 +222,18 @@ const Account = () => {
           header={'Change Password'}
           inputs={[
             {
-              name: 'Old Password',
-              type: 'text',
+              name: 'oldPassword',
+              type: 'password',
               placeholder: 'Old Password'
             },
             {
-              name: 'New Password',
-              type: 'text',
+              name: 'newPassword1',
+              type: 'password',
               placeholder: 'New Password'
             },
             {
-              name: 'Confim New Password',
-              typ: 'text',
+              name: 'newPassword2',
+              type: 'password',
               placeholder: 'Confirm New Password'
             }
           ]}
@@ -128,22 +242,25 @@ const Account = () => {
               text: 'Cancel',
               role: 'cancel',
               cssClass: 'secondary',
-              handler: () => {
-                console.log('Confirm Cancel');
-              }
             },
             {
               text: 'Save',
-              handler: () => {
-                console.log('Confirm Save');
+              handler: (passwordData) => {
+                handlePasswordChange(passwordData);
               }
             }
           ]}
         />
+        <IonAlert
+          isOpen={error}
+          onDidDismiss={() => setError(false)}
+          cssClass="my-custom-class"
+          header={"Error!"}
+          message={message}
+          buttons={["Dismiss"]}
+        />
         </IonRow>
         <IonRow size="2"></IonRow>
-        
-        {/** only works after page refresh */}
       </IonGrid>
       <IonButton href="/">
         Log Out
