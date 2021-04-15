@@ -65,6 +65,15 @@ class SaleViewset(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = SaleSerializer
+    def get_queryset(self):
+        queryset = Sale.objects.all()
+        id = self.request.query_params.get('id')
+        if id is not None:
+            queryset = queryset.filter(seller=id)
+        if queryset:
+            return queryset
+        else:
+            raise NotFound()
 
 class ExpenseViewset(viewsets.ModelViewSet):
     queryset = Expense.objects.all()

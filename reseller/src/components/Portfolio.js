@@ -10,7 +10,7 @@ import {
   IonSelectOption,
   IonItemDivider,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FusionCharts from "fusioncharts";
 import Charts from "fusioncharts/fusioncharts.charts";
 import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
@@ -19,28 +19,40 @@ import ReactFC from "react-fusioncharts";
 import { JsonToTable } from "react-json-to-table";
 import ChartViewer from "./Chart";
 import SaleTable from "./SaleTable";
+import axios from "axios";
 
 ReactFC.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries);
 
-const Portfolio = () => {
-  const saleData = [
-    {
-      ID: 1,
-      Item: "2021 Pokemon TCG Sword & Shield Shining Fates Elite Trainer Box",
-      Buyer: "Thomas Kahessay",
-    },
-    {
-      ID: 2,
-      Item: "Jordan 1 Retro High Patina",
-      Buyer: "Baylee Cheung",
-    },
-    {
-      ID: 3,
-      Item:
-        "Sony PS5 PlayStation 5 (US Plug) Blu-ray Edition Console 3005718 White",
-      Buyer: "Elize Tran",
-    },
-  ];
+let Portfolio = () => {
+  const url = window.location.href;
+  const id = url.split("/").pop();
+  const [sales, setSales] = useState([]);
+
+  useEffect(() => {
+    let ignore = false;
+    if (!ignore) {
+      const userData = {
+        id: id,
+      };
+
+      const api = axios.create({
+        baseURL: `http://127.0.0.1:8000/api`,
+      });
+      api
+        .get("/sales/", { params: userData })
+        .then((res) => {
+          setSales(res.data);
+          console.log(res.data);
+          console.log(sales);
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+      return () => {
+        ignore = true;
+      };
+    }
+  }, []);
 
   const [duration, setDuration] = useState("alltime");
 
@@ -58,8 +70,8 @@ const Portfolio = () => {
             Buyer
           </IonCol>
         </IonRow>
-        {saleData.map((sale) => (
-          <SaleTable ID={sale.ID} item={sale.Item} buyer={sale.Buyer} />
+        {sales.map((sale) => (
+          <SaleTable ID={sale.id} item={sale.item} buyer={sale.buyer} />
         ))}
         <IonItemDivider />
         <IonRow>
@@ -69,5 +81,7 @@ const Portfolio = () => {
     </IonPage>
   );
 };
+
+Portfolio = React.memo(Portfolio);
 
 export default Portfolio;
