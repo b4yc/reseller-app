@@ -181,15 +181,17 @@ const Inventory = () => {
             status={item.status.toString()}
           />
         ))}
+        <IonButton
+          onClick={() => {
+            setShowAddItem(true);
+          }}
+          className='addBtn'
+          shape='round'
+          size='default'
+        >
+          Add Item
+        </IonButton>
       </IonGrid>
-      <IonButton
-        onClick={() => {
-          setShowAddItem(true);
-        }}
-        className='addBtn'
-      >
-        Add Item
-      </IonButton>
       <IonContent>
         <IonModal
           isOpen={showAddItem}
@@ -300,6 +302,7 @@ const Inventory = () => {
                   expand='full'
                   onClick={() => setShowAddItem(false)}
                   className='cancelBtn'
+                  shape='round'
                 >
                   Cancel
                 </IonButton>
@@ -319,7 +322,7 @@ const Inventory = () => {
                       addCard();
                     }
                   }}
-                  className='addBtn'
+                  shape='round'
                 >
                   Add
                 </IonButton>
