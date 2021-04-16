@@ -73,6 +73,7 @@ class ChartViewer extends React.Component {
     super(props);
     this.onFetchData = this.onFetchData.bind(this);
     this.state = {
+      rawData: this.props.data,
       timeseriesDs: {
         type: "timeseries",
         renderAt: "container",
@@ -85,23 +86,59 @@ class ChartViewer extends React.Component {
   }
 
   componentDidMount() {
+    this.parseProfit();
     this.onFetchData();
   }
 
   onFetchData() {
-    Promise.all([dataFetch, schemaFetch]).then((res) => {
-      const data = res[0];
-      const schema = res[1];
-      const fusionTable = new FusionCharts.DataStore().createDataTable(
-        data,
-        schema
-      );
-      const timeseriesDs = Object.assign({}, this.state.timeseriesDs);
-      timeseriesDs.dataSource.data = fusionTable;
-      this.setState({
-        timeseriesDs,
-      });
+    // Promise.all([dataFetch, schemaFetch]).then((res) => {
+    // const data = res[0];
+    // console.log(data);
+    // const schema = res[1];
+    const data = this.parseProfit();
+    const schema = [
+      {
+        name: "Date",
+        type: "date",
+        format: "%Y-%m-%d",
+      },
+      {
+        name: "Profit",
+        type: "number",
+      },
+    ];
+    console.log(data);
+    const fusionTable = new FusionCharts.DataStore().createDataTable(
+      data,
+      schema
+    );
+    const timeseriesDs = Object.assign({}, this.state.timeseriesDs);
+    timeseriesDs.dataSource.data = fusionTable;
+    this.setState({
+      timeseriesDs,
     });
+    //  });
+  }
+  parseProfit() {
+    let profit = this.state.rawData.map(
+      (a) => parseFloat(a.askingPrice) - parseFloat(a.boughtPrice)
+    );
+    console.log(profit);
+    let date = this.state.rawData.map((a) => a.date);
+    let profitData = [];
+    for (let i = 0; i < profit.length; i++) {
+      profitData.push(this.appendArrays(date[i], profit[i]));
+    }
+    console.log(profitData);
+    return profitData;
+  }
+
+  appendArrays() {
+    let temp = [];
+    for (let j = 0; j < arguments.length; j++) {
+      temp.push(arguments[j]);
+    }
+    return temp;
   }
 
   render() {
