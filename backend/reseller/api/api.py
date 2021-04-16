@@ -55,6 +55,16 @@ class ElectronicViewset(viewsets.ModelViewSet):
     ]
     serializer_class = ElectronicSerializer
 
+    def get_queryset(self):
+        queryset = Electronic.objects.all()
+        id = self.request.query_params.get('id')
+        if id is not None:
+            queryset = queryset.filter(id=id)
+        if queryset:
+            return queryset
+        else:
+            raise NotFound()
+
 class ShoeViewset(viewsets.ModelViewSet):
     queryset = Shoe.objects.all()
     permission_classes = [
@@ -79,6 +89,16 @@ class CardViewset(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = CardSerializer
+
+    def get_queryset(self):
+        queryset = Card.objects.all()
+        id = self.request.query_params.get('id')
+        if id is not None:
+            queryset = queryset.filter(id=id)
+        if queryset:
+            return queryset
+        else:
+            raise NotFound()
 
 class SaleViewset(viewsets.ModelViewSet):
     queryset = Sale.objects.all()

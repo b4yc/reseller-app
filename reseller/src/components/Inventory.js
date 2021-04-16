@@ -60,6 +60,92 @@ const Inventory = () => {
       .catch((e) => console.log(e));
   };
 
+  function addElectronic() {
+    const itemData = {
+      status: "AVAILABLE",
+      askingPrice: parseFloat(askingPrice).toFixed(2),
+      boughtPrice: parseFloat(boughtPrice).toFixed(2),
+      name: name,
+      model: model,
+      category: "ELECTRONICS",
+      brand: brand,
+      seller: parseInt(id),
+    };
+
+    const api = axios.create({
+      baseURL: "http://127.0.0.1:8000/api",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    api
+      .post(`/electronics/`, itemData)
+      .then((response) => {
+        console.log(response);
+        retrieveItems();
+      })
+      .catch((e) => console.log(e));
+  }
+
+  function addShoe() {
+    const itemData = {
+      status: "AVAILABLE",
+      askingPrice: askingPrice,
+      boughtPrice: boughtPrice,
+      name: name,
+      model: model,
+      category: "SHOE",
+      brand: brand,
+      size: size,
+      seller: id,
+    };
+
+    const api = axios.create({
+      baseURL: "http://127.0.0.1:8000/api",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    api
+      .post(`/shoes/`, itemData)
+      .then((response) => {
+        console.log(response);
+        retrieveItems();
+      })
+      .catch((e) => console.log(e));
+  }
+
+  function addCard() {
+    const itemData = {
+      status: "AVAILABLE",
+      askingPrice: askingPrice,
+      boughtPrice: boughtPrice,
+      name: name,
+      model: model,
+      category: "CARD",
+      brand: brand,
+      year: year,
+      seller: id,
+    };
+
+    const api = axios.create({
+      baseURL: "http://127.0.0.1:8000/api",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    api
+      .post(`/cards/`, itemData)
+      .then((response) => {
+        console.log(response);
+        retrieveItems();
+      })
+      .catch((e) => console.log(e));
+  }
+
   return (
     <IonPage>
       <IonGrid>
@@ -213,18 +299,29 @@ const Inventory = () => {
                 <IonButton
                   expand='full'
                   onClick={() => setShowAddItem(false)}
-                  className='closeBtn'
+                  className='cancelBtn'
                 >
-                  Close
+                  Cancel
                 </IonButton>
               </IonCol>
               <IonCol size='6'>
                 <IonButton
                   expand='full'
-                  onClick={() => setShowAddItem(false)}
-                  className='saveBtn'
+                  onClick={() => {
+                    setShowAddItem(false);
+                    if (category === "ELECTRONICS") {
+                      addElectronic();
+                    }
+                    if (category === "SHOE") {
+                      addShoe();
+                    }
+                    if (category === "CARD") {
+                      addCard();
+                    }
+                  }}
+                  className='addBtn'
                 >
-                  Save
+                  Add
                 </IonButton>
               </IonCol>
             </IonRow>
