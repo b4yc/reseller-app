@@ -12,7 +12,10 @@ const dataFetch = fetch(
 const schemaFetch = fetch("chartSchema.json").then(jsonify);
 
 const dataSource = {
-  chart: {},
+  chart: {
+    connectnulldata: true,
+    skipNullValues: "1",
+  },
   caption: {
     text: "Profit Over Time",
   },
@@ -20,6 +23,7 @@ const dataSource = {
     {
       plot: {
         value: "Profit",
+        connectnulldata: true,
       },
       format: {
         prefix: "$",
@@ -80,13 +84,13 @@ class ChartViewer extends React.Component {
         width: "600",
         height: "400",
         stroke: "#B9B9C8",
+        connectnulldata: true,
         dataSource,
       },
     };
   }
 
   componentDidMount() {
-    this.parseProfit();
     this.onFetchData();
   }
 
@@ -120,6 +124,7 @@ class ChartViewer extends React.Component {
     //  });
   }
   parseProfit() {
+    console.log(this.state.rawData);
     let profit = this.state.rawData.map(
       (a) => parseFloat(a.askingPrice) - parseFloat(a.boughtPrice)
     );
