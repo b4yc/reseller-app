@@ -296,7 +296,8 @@ const InventoryTable = ({
                 role: "cancel",
                 cssClass: "secondary",
                 handler: () => {
-                  console.log("Confirm Cancel");
+                  changeStatus(ID, "AVAILABLE");
+                  setStatus("AVAILABLE");
                 },
               },
               {
