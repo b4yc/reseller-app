@@ -148,6 +148,14 @@ const Inventory = () => {
       .catch((e) => console.log(e));
   }
 
+  function formatAsk() {
+    setAskingPrice(parseFloat(askingPrice).toFixed(2));
+  }
+
+  function formatBought() {
+    setBoughtPrice(parseFloat(boughtPrice).toFixed(2));
+  }
+
   return (
     <IonPage>
       <IonGrid>
@@ -286,7 +294,12 @@ const Inventory = () => {
                 type='number'
                 value={boughtPrice}
                 placeholder='Bought Price'
-                onIonChange={(e) => setBoughtPrice(e.detail.value)}
+                onIonChange={(e) => {
+                  setBoughtPrice(e.detail.value);
+                }}
+                onPointerLeave={() => {
+                  formatBought();
+                }}
               ></IonInput>
             </IonItem>
             <IonItem>
@@ -294,7 +307,10 @@ const Inventory = () => {
                 type='number'
                 value={askingPrice}
                 placeholder='Asking Price'
-                onIonChange={(e) => setAskingPrice(parseFloat(e.detail.value))}
+                onIonChange={(e) => setAskingPrice(e.detail.value)}
+                onPointerLeave={() => {
+                  formatAsk();
+                }}
               ></IonInput>
             </IonItem>
           </IonList>
@@ -318,7 +334,6 @@ const Inventory = () => {
                       !category ||
                       !name ||
                       !model ||
-                      !size ||
                       !brand ||
                       !boughtPrice ||
                       !askingPrice

@@ -33,6 +33,9 @@ const InventoryTable = ({
   const [size, setSize] = useState();
   const [year, setYear] = useState();
 
+  const url = window.location.href;
+  const sellerID = url.split("/").pop();
+
   const handleChangeB = (val) => {
     setBPrice(val);
   };
@@ -132,6 +135,51 @@ const InventoryTable = ({
       });
   }
 
+  function addBuyer(buyer, itemID) {
+    const buyerData = {
+      firstName: buyer.firstName,
+      lastName: buyer.lastName,
+      email: buyer.email,
+      address: buyer.address,
+      seller: sellerID,
+    };
+    const api = axios.create({
+      baseURL: "http://127.0.0.1:8000/api",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    api
+      .post(`/buyers/`, buyerData)
+      .then((response) => {
+        console.log(response);
+        let buyerID = response.data.id;
+        addSale(buyerID, itemID);
+      })
+      .catch((e) => console.log(e));
+  }
+
+  function addSale(buyerID, itemID) {
+    const saleData = {
+      date: new Date().toISOString().slice(0, 10),
+      seller: sellerID,
+      buyer: buyerID,
+      item: itemID,
+    };
+    const api = axios.create({
+      baseURL: "http://127.0.0.1:8000/api",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    api
+      .post(`/sales/`, saleData)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => console.log(e));
+  }
+
   return (
     <IonRow>
       <IonCol className='col' size='0.5'>
@@ -222,22 +270,22 @@ const InventoryTable = ({
             header={"Buyer Information"}
             inputs={[
               {
-                name: "First Name",
+                name: "firstName",
                 type: "text",
                 placeholder: "First Name",
               },
               {
-                name: "Last Name",
+                name: "lastName",
                 type: "text",
                 placeholder: "Last Name",
               },
               {
-                name: "Email",
+                name: "email",
                 typ: "text",
                 placeholder: "Email",
               },
               {
-                name: "Address",
+                name: "address",
                 typ: "text",
                 placeholder: "Address",
               },
@@ -253,8 +301,9 @@ const InventoryTable = ({
               },
               {
                 text: "Save",
-                handler: () => {
+                handler: (buyerData) => {
                   console.log("Confirm Save");
+                  addBuyer(buyerData, ID);
                 },
               },
             ]}
