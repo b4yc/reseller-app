@@ -309,10 +309,16 @@ const InventoryTable = ({
               },
             ]}
           />
-          <IonSelectOption value='AVAILABLE'>Available</IonSelectOption>
-          <IonSelectOption value='DELIVERED'>Delivered</IonSelectOption>
-          <IonSelectOption value='SHIPPED'>Shipped</IonSelectOption>
+          <IonSelectOption value='AVAILABLE' disabled={status1 !== "AVAILABLE"}>
+            Available
+          </IonSelectOption>
           <IonSelectOption value='SOLD'>Sold</IonSelectOption>
+          <IonSelectOption value='SHIPPED' disabled={status1 === "AVAILABLE"}>
+            Shipped
+          </IonSelectOption>
+          <IonSelectOption value='DELIVERED' disabled={status1 === "AVAILABLE"}>
+            Delivered
+          </IonSelectOption>
         </IonSelect>
       </IonCol>
     </IonRow>
