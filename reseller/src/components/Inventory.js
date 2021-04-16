@@ -156,6 +156,17 @@ const Inventory = () => {
     setBoughtPrice(parseFloat(boughtPrice).toFixed(2));
   }
 
+  function clearData() {
+    setCategory();
+    setName("");
+    setModel("");
+    setBrand("");
+    setSize();
+    setYear();
+    setBoughtPrice();
+    setAskingPrice();
+  }
+
   return (
     <IonPage>
       <IonGrid>
@@ -319,7 +330,10 @@ const Inventory = () => {
               <IonCol size='6'>
                 <IonButton
                   expand='full'
-                  onClick={() => setShowAddItem(false)}
+                  onClick={() => {
+                    setShowAddItem(false);
+                    clearData();
+                  }}
                   className='cancelBtn'
                   shape='round'
                 >
