@@ -9,8 +9,10 @@ import {
   IonSelect,
   IonSelectOption,
   IonItemDivider,
+  IonText,
+  IonTitle,
 } from "@ionic/react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import FusionCharts from "fusioncharts";
 import Charts from "fusioncharts/fusioncharts.charts";
 import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
@@ -24,35 +26,84 @@ import axios from "axios";
 ReactFC.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries);
 
 let Portfolio = () => {
-  const url = window.location.href;
-  const id = url.split("/").pop();
   const [sales, setSales] = useState([]);
+  const [dataFetched, setDataFetched] = useState(false);
+  const [items, setItems] = useState([]);
+  //const [id, setId] = useState();
+  const [buyers, setBuyers] = useState([]);
+  // const [items, setItems] = useState([]);
+  // const [data, setData] = useState([]);
+
+  let data = [];
+  let id;
+  const api = axios.create({
+    baseURL: `http://127.0.0.1:8000/api`,
+  });
 
   useEffect(() => {
-    let ignore = false;
-    if (!ignore) {
-      const userData = {
-        id: id,
-      };
-
-      const api = axios.create({
-        baseURL: `http://127.0.0.1:8000/api`,
-      });
-      api
-        .get("/sales/", { params: userData })
-        .then((res) => {
-          setSales(res.data);
-          console.log(res.data);
-          console.log(sales);
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
-      return () => {
-        ignore = true;
-      };
-    }
+    retrieveSales();
   }, []);
+
+  const retrieveSales = async () => {
+    const url = window.location.href;
+    id = url.split("/").pop();
+    const saleData = {
+      seller: id,
+    };
+    const sellerData = {
+      id: id,
+    };
+
+    const api = axios.create({
+      baseURL: "http://127.0.0.1:8000/api",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    let response = await api
+      .get(`/sales/`, { params: saleData })
+      .then((response) => {
+        setSales(response.data);
+        return response.data;
+      })
+      .catch((e) => console.log(e));
+
+    let itemResponse = await api
+      .get("/items/", { params: saleData })
+      .then((response) => {
+        setItems(response.data);
+        return response.data;
+      })
+      .catch((e) => console.log(e));
+    // console.log(itemResponse);
+    console.log(items);
+
+    let buyerResponse = await api
+      .get("/buyers/")
+      .then((response) => {
+        setBuyers(response.data);
+
+        return response.data;
+      })
+      .catch((e) => console.log(e));
+  };
+
+  function combineData() {
+    let combinedItems = [];
+    for (let i = 0; i < sales.length; i++) {
+      combinedItems.push({
+        ...sales[i],
+        ...items.find((inner) => inner.id === sales[i].item),
+      });
+    }
+    for (let i = 0; i < combinedItems.length; i++) {
+      data.push({
+        ...combinedItems[i],
+        ...buyers.find((inner) => inner.id === combinedItems[i].buyer),
+      });
+    }
+  }
 
   const [duration, setDuration] = useState("alltime");
 
@@ -70,18 +121,26 @@ let Portfolio = () => {
             Buyer
           </IonCol>
         </IonRow>
-        {sales.map((sale) => (
-          <SaleTable ID={sale.id} item={sale.item} buyer={sale.buyer} />
+        {combineData()}
+        {/* {console.log(data)} */}
+        {data.map((d) => (
+          <SaleTable
+            ID={d.item}
+            item={d.name}
+            buyerFName={d.firstName}
+            buyerLName={d.lastName}
+            buyerEmail={d.email}
+            buyerAddress={d.address}
+          ></SaleTable>
         ))}
+        <SaleTable></SaleTable>
         <IonItemDivider />
         <IonRow>
-          <ChartViewer></ChartViewer>
+          <ChartViewer data={data}></ChartViewer>
         </IonRow>
       </IonGrid>
     </IonPage>
   );
 };
-
-Portfolio = React.memo(Portfolio);
 
 export default Portfolio;
