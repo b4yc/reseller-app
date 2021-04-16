@@ -46,7 +46,7 @@ const InventoryTable = ({
     setBPrice(parseFloat(bprice1).toFixed(2));
   };
 
-  const handleSaveS = (val) => {
+  const handleSaveS = () => {
     /** POST changes to db */
     setSPrice(parseFloat(sprice1).toFixed(2));
   };
@@ -90,7 +90,6 @@ const InventoryTable = ({
   }
 
   function changeStatus(itemID, itemStatus) {
-    console.log(itemID, itemStatus);
     const statusData = {
       status: itemStatus,
     };
@@ -103,6 +102,28 @@ const InventoryTable = ({
 
     api
       .patch(`/items/${itemID}/`, statusData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  }
+
+  function changeAskingPrice(itemID, newPrice) {
+    newPrice = parseFloat(newPrice).toFixed(2);
+    const priceData = {
+      askingPrice: newPrice,
+    };
+    const api = axios.create({
+      baseURL: "http://127.0.0.1:8000/api",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    api
+      .patch(`/items/${itemID}/`, priceData)
       .then((res) => {
         console.log(res);
       })
@@ -165,7 +186,10 @@ const InventoryTable = ({
           className='textBox'
           value={sprice1.toString()}
           onChange={handleChangeS}
-          onSave={handleSaveS}
+          onSave={() => {
+            handleSaveS();
+            changeAskingPrice(ID, sprice1);
+          }}
         />
       </IonCol>
       <IonCol size='2'>
