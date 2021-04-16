@@ -12,6 +12,7 @@ import {
   IonLabel,
   IonSelect,
   IonSelectOption,
+  IonAlert,
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 
@@ -30,6 +31,7 @@ const Inventory = () => {
   const [year, setYear] = useState();
   const [boughtPrice, setBoughtPrice] = useState();
   const [askingPrice, setAskingPrice] = useState();
+  const [showAlert, setShowAlert] = useState(false);
 
   const url = window.location.href;
   const id = url.split("/").pop();
@@ -197,6 +199,7 @@ const Inventory = () => {
           isOpen={showAddItem}
           cssClass='my-custom-class'
           onDidDismiss={() => setShowAddItem(false)}
+          className='addModal'
         >
           <h1>Add Item</h1>
           <IonList>
@@ -311,14 +314,34 @@ const Inventory = () => {
                 <IonButton
                   expand='full'
                   onClick={() => {
+                    if (
+                      !category ||
+                      !name ||
+                      !model ||
+                      !size ||
+                      !brand ||
+                      !boughtPrice ||
+                      !askingPrice
+                    ) {
+                      setShowAlert(true);
+                      return;
+                    }
                     setShowAddItem(false);
                     if (category === "ELECTRONICS") {
                       addElectronic();
                     }
                     if (category === "SHOE") {
+                      if (!size) {
+                        setShowAlert(true);
+                        return;
+                      }
                       addShoe();
                     }
                     if (category === "CARD") {
+                      if (!year) {
+                        setShowAlert(true);
+                        return;
+                      }
                       addCard();
                     }
                   }}
@@ -329,6 +352,19 @@ const Inventory = () => {
               </IonCol>
             </IonRow>
           </IonGrid>
+          <IonAlert
+            isOpen={showAlert}
+            onDidDismiss={() => setShowAlert(false)}
+            message='Please Enter All Fields'
+            buttons={[
+              {
+                text: "OK",
+                handler: () => {
+                  setShowAlert(false);
+                },
+              },
+            ]}
+          />
         </IonModal>
       </IonContent>
     </IonPage>
