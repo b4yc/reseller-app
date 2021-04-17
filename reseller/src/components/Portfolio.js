@@ -29,11 +29,7 @@ let Portfolio = () => {
   const [sales, setSales] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
   const [items, setItems] = useState([]);
-  //const [id, setId] = useState();
   const [buyers, setBuyers] = useState([]);
-  // const [items, setItems] = useState([]);
-  // const [data, setData] = useState([]);
-
   let data = [];
   let id;
   const api = axios.create({
@@ -97,15 +93,20 @@ let Portfolio = () => {
         ...items.find((inner) => inner.id === sales[i].item),
       });
     }
+    let temp = [];
     for (let i = 0; i < combinedItems.length; i++) {
-      data.push({
+      temp.push({
         ...combinedItems[i],
         ...buyers.find((inner) => inner.id === combinedItems[i].buyer),
       });
     }
-  }
+    if (!dataFetched) {
+      console.log("updating data state");
+      setDataFetched(true);
+    }
 
-  const [duration, setDuration] = useState("alltime");
+    data = temp;
+  }
 
   return (
     <IonPage>
@@ -122,7 +123,7 @@ let Portfolio = () => {
           </IonCol>
         </IonRow>
         {combineData()}
-        {/* {console.log(data)} */}
+        {console.log(data)}
         {data.map((d) => (
           <SaleTable
             ID={d.item}
@@ -135,8 +136,9 @@ let Portfolio = () => {
         ))}
         <SaleTable></SaleTable>
         <IonItemDivider />
+        {console.log(dataFetched)}
         <IonRow>
-          <ChartViewer data={data}></ChartViewer>
+          {dataFetched ? <ChartViewer data={data}></ChartViewer> : "loading"}
         </IonRow>
       </IonGrid>
     </IonPage>

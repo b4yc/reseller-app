@@ -5,11 +5,11 @@ import ReactFC from "react-fusioncharts";
 
 ReactFC.fcRoot(FusionCharts, TimeSeries);
 
-const jsonify = (res) => res.json();
-const dataFetch = fetch(
-  "https://s3.eu-central-1.amazonaws.com/fusion.store/ft/data/line-chart-with-time-axis-data.json"
-).then(jsonify);
-const schemaFetch = fetch("chartSchema.json").then(jsonify);
+// const jsonify = (res) => res.json();
+// const dataFetch = fetch(
+//   "https://s3.eu-central-1.amazonaws.com/fusion.store/ft/data/line-chart-with-time-axis-data.json"
+// ).then(jsonify);
+// const schemaFetch = fetch("chartSchema.json").then(jsonify);
 
 const dataSource = {
   chart: {
@@ -76,6 +76,8 @@ class ChartViewer extends React.Component {
   constructor(props) {
     super(props);
     this.onFetchData = this.onFetchData.bind(this);
+    this.parseProfit = this.parseProfit.bind(this);
+    this.appendArrays = this.appendArrays.bind(this);
     this.state = {
       rawData: this.props.data,
       timeseriesDs: {
@@ -94,11 +96,15 @@ class ChartViewer extends React.Component {
     this.onFetchData();
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      this.state.rawData = this.props.data;
+      this.onFetchData();
+    }
+  }
+
   onFetchData() {
-    // Promise.all([dataFetch, schemaFetch]).then((res) => {
-    // const data = res[0];
-    // console.log(data);
-    // const schema = res[1];
+    console.log(this.state.rawData);
     const data = this.parseProfit();
     const schema = [
       {
@@ -121,7 +127,6 @@ class ChartViewer extends React.Component {
     this.setState({
       timeseriesDs,
     });
-    //  });
   }
   parseProfit() {
     console.log(this.state.rawData);
