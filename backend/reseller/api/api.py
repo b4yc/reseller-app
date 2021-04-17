@@ -31,6 +31,16 @@ class BuyerViewset(viewsets.ModelViewSet):
     ]
     serializer_class = BuyerSerializer
 
+    def get_queryset(self):
+        queryset = Buyer.objects.all()
+        id = self.request.query_params.get('id')
+        if id is not None:
+            queryset = queryset.filter(seller=id)
+        if queryset:
+            return queryset
+        else:
+            raise NotFound()
+
 class ItemViewset(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     permission_classes = [
