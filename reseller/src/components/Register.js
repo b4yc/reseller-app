@@ -13,7 +13,7 @@ import {
   IonInput,
   IonItem,
   IonText,
-  IonItemDivider,
+  IonAlert,
   IonApp,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
@@ -78,8 +78,9 @@ const Register = () => {
     api
       .post("/sellers/", registerData)
       .then((res) => {
-        history.push("/portfolio/" + res.data[0]["id"]);
-        console.log(res.data);
+        console.log(res.data["id"]);
+        history.push("/portfolio/" + res.data["id"]);
+        
       })
       .catch((error) => {
         console.log(error.response);
@@ -97,7 +98,16 @@ const Register = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent className="authenticate">
+          
           <form>
+            <IonAlert
+              isOpen={error}
+              onDidDismiss={() => setError(false)}
+              cssClass="my-custom-class"
+              header={"Error!"}
+              message={message}
+              buttons={["Dismiss"]}
+            />
             <IonItem>
               <IonLabel>First Name</IonLabel>
               <IonInput
@@ -133,7 +143,6 @@ const Register = () => {
               ></IonInput>
             </IonItem>
             <IonButton onClick={handleRegister}>Register</IonButton>{" "}
-            {/* type="submit" */}
           </form>
           <IonItem>Already have an account?</IonItem>
           <IonButton href="/login">Sign In</IonButton>
