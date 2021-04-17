@@ -8,11 +8,13 @@ import {
   IonItem,
   IonLabel,
   IonInput,
+  IonContent,
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import EdiTextArea from "react-editext";
 import { Link } from "react-router-dom";
 import "./Account.scss";
+import "../App.css";
 import axios from "axios";
 
 const Account = () => {

@@ -73,8 +73,6 @@ let Portfolio = () => {
         return response.data;
       })
       .catch((e) => console.log(e));
-    // console.log(itemResponse);
-    console.log(items);
 
     let buyerResponse = await api
       .get("/buyers/")
@@ -102,7 +100,6 @@ let Portfolio = () => {
       });
     }
     if (!dataFetched) {
-      console.log("updating data state");
       setDataFetched(true);
     }
 
@@ -110,7 +107,7 @@ let Portfolio = () => {
   }
 
   return (
-    <IonPage style={{ overflow: "auto" }}>
+    <IonPage style={{ overflow: "auto", overflowX: "auto" }}>
       <IonGrid>
         <IonRow>
           <IonCol className="header" size="1">
@@ -124,7 +121,6 @@ let Portfolio = () => {
           </IonCol>
         </IonRow>
         {combineData()}
-        {console.log(data)}
         {data.map((d) => (
           <SaleTable
             ID={d.item}
@@ -136,8 +132,10 @@ let Portfolio = () => {
           ></SaleTable>
         ))}
         <IonItemDivider />
+        <IonRow>
+          {dataFetched ? <ChartViewer data={data}></ChartViewer> : "loading"}
+        </IonRow>
       </IonGrid>
-      {dataFetched ? <ChartViewer data={data}></ChartViewer> : "loading"}
     </IonPage>
   );
 };
