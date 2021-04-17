@@ -127,7 +127,7 @@ class SaleViewset(viewsets.ModelViewSet):
     serializer_class = SaleSerializer
     def get_queryset(self):
         queryset = Sale.objects.all()
-        id = self.request.query_params.get('id')
+        id = self.request.query_params.get('seller')
         if id is not None:
             queryset = queryset.filter(seller=id)
         if queryset:
