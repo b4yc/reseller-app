@@ -145,11 +145,14 @@ let Portfolio = () => {
           <IonCol className='header' size='1'>
             ID
           </IonCol>
-          <IonCol className='header' size='8'>
+          <IonCol className="header" size="6">
             Item
           </IonCol>
           <IonCol className='header' size='3'>
             Buyer
+          </IonCol>
+          <IonCol className="header" size="2">
+            Revenue
           </IonCol>
         </IonRow>
         {combineData()}
@@ -161,6 +164,7 @@ let Portfolio = () => {
             buyerLName={d.lastName}
             buyerEmail={d.email}
             buyerAddress={d.address}
+            revenue={parseFloat(d.askingPrice) - parseFloat(d.boughtPrice)}
           ></SaleTable>
         ))}
         <IonItemDivider />

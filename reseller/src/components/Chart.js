@@ -143,7 +143,6 @@ class ChartViewer extends React.Component {
     for (let i = 0; i < profit.length; i++) {
       profitData.push(this.appendArrays(date[i], profit[i]));
     }
-    console.log(profitData);
     return profitData;
   }
 
