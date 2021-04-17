@@ -17,18 +17,18 @@ const dataSource = {
     skipNullValues: "1",
   },
   caption: {
-    text: "Profit Over Time",
+    text: "Revenue Over Time",
   },
   yaxis: [
     {
       plot: {
-        value: "Profit",
+        value: "Revenue",
         connectnulldata: true,
       },
       format: {
         prefix: "$",
       },
-      title: "Profit (CAD)",
+      title: "Revenue (CAD)",
     },
   ],
   legend: {
@@ -112,7 +112,7 @@ class ChartViewer extends React.Component {
         format: "%Y-%m-%d",
       },
       {
-        name: "Profit",
+        name: "revenue",
         type: "number",
       },
     ];
