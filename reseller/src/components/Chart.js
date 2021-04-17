@@ -135,8 +135,9 @@ class ChartViewer extends React.Component {
     );
     let cumulative = 0;
     for (let i = 0; i < profit.length; i++) {
+      console.log(cumulative);
       profit[i] = profit[i] + cumulative;
-      cumulative += profit[i];
+      cumulative = profit[i];
     }
     let date = this.state.rawData.map((a) => a.date);
     let profitData = [];
