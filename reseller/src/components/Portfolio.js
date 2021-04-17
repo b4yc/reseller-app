@@ -30,6 +30,7 @@ let Portfolio = () => {
   const [dataFetched, setDataFetched] = useState(false);
   const [items, setItems] = useState([]);
   const [buyers, setBuyers] = useState([]);
+  const [noSales, setNoSales] = useState([]);
   let data = [];
   let id;
   const api = axios.create({
