@@ -335,10 +335,7 @@ const Inventory = () => {
               <IonCol size="6">
                 <IonButton
                   expand='full'
-                  onClick={() => {
-                    setShowAddItem(false);
-                    clearData();
-                  }}
+                  onClick={() => setShowAddItem(false)}
                   className='cancelBtn'
                   shape='round'
                 >
