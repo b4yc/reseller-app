@@ -5,14 +5,17 @@ import ReactFC from "react-fusioncharts";
 
 ReactFC.fcRoot(FusionCharts, TimeSeries);
 
-const jsonify = (res) => res.json();
-const dataFetch = fetch(
-  "https://s3.eu-central-1.amazonaws.com/fusion.store/ft/data/line-chart-with-time-axis-data.json"
-).then(jsonify);
-const schemaFetch = fetch("chartSchema.json").then(jsonify);
+// const jsonify = (res) => res.json();
+// const dataFetch = fetch(
+//   "https://s3.eu-central-1.amazonaws.com/fusion.store/ft/data/line-chart-with-time-axis-data.json"
+// ).then(jsonify);
+// const schemaFetch = fetch("chartSchema.json").then(jsonify);
 
 const dataSource = {
-  chart: {},
+  chart: {
+    connectnulldata: true,
+    skipNullValues: "1",
+  },
   caption: {
     text: "Profit Over Time",
   },
@@ -20,6 +23,7 @@ const dataSource = {
     {
       plot: {
         value: "Profit",
+        connectnulldata: true,
       },
       format: {
         prefix: "$",
@@ -72,13 +76,17 @@ class ChartViewer extends React.Component {
   constructor(props) {
     super(props);
     this.onFetchData = this.onFetchData.bind(this);
+    this.parseProfit = this.parseProfit.bind(this);
+    this.appendArrays = this.appendArrays.bind(this);
     this.state = {
+      rawData: this.props.data,
       timeseriesDs: {
         type: "timeseries",
         renderAt: "container",
         width: "600",
         height: "400",
         stroke: "#B9B9C8",
+        connectnulldata: true,
         dataSource,
       },
     };
@@ -88,20 +96,59 @@ class ChartViewer extends React.Component {
     this.onFetchData();
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      this.state.rawData = this.props.data;
+      this.onFetchData();
+    }
+  }
+
   onFetchData() {
-    Promise.all([dataFetch, schemaFetch]).then((res) => {
-      const data = res[0];
-      const schema = res[1];
-      const fusionTable = new FusionCharts.DataStore().createDataTable(
-        data,
-        schema
-      );
-      const timeseriesDs = Object.assign({}, this.state.timeseriesDs);
-      timeseriesDs.dataSource.data = fusionTable;
-      this.setState({
-        timeseriesDs,
-      });
+    console.log(this.state.rawData);
+    const data = this.parseProfit();
+    const schema = [
+      {
+        name: "Date",
+        type: "date",
+        format: "%Y-%m-%d",
+      },
+      {
+        name: "Profit",
+        type: "number",
+      },
+    ];
+    console.log(data);
+    const fusionTable = new FusionCharts.DataStore().createDataTable(
+      data,
+      schema
+    );
+    const timeseriesDs = Object.assign({}, this.state.timeseriesDs);
+    timeseriesDs.dataSource.data = fusionTable;
+    this.setState({
+      timeseriesDs,
     });
+  }
+  parseProfit() {
+    console.log(this.state.rawData);
+    let profit = this.state.rawData.map(
+      (a) => parseFloat(a.askingPrice) - parseFloat(a.boughtPrice)
+    );
+    console.log(profit);
+    let date = this.state.rawData.map((a) => a.date);
+    let profitData = [];
+    for (let i = 0; i < profit.length; i++) {
+      profitData.push(this.appendArrays(date[i], profit[i]));
+    }
+    console.log(profitData);
+    return profitData;
+  }
+
+  appendArrays() {
+    let temp = [];
+    for (let j = 0; j < arguments.length; j++) {
+      temp.push(arguments[j]);
+    }
+    return temp;
   }
 
   render() {
