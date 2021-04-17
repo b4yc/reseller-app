@@ -33,7 +33,7 @@ let Portfolio = () => {
   const [items, setItems] = useState([]);
   const [buyers, setBuyers] = useState([]);
   const [noSales, setNoSales] = useState([]);
-  const [expenses, setExpenses] = useState();
+  const [expenses, setExpenses] = useState(0);
   let data = [];
   let id;
   const api = axios.create({
@@ -150,7 +150,7 @@ let Portfolio = () => {
 
   return (
     <IonPage style={{ overflow: "auto", overflowX: "auto" }}>
-      <IonGrid>
+      <IonGrid fixed="true">
         <IonRow>
           <IonCol>
             {combineData()}
@@ -183,9 +183,9 @@ let Portfolio = () => {
           ></SaleTable>
         ))}
         <IonItemDivider />
-        <IonRow>
+        <IonContent>
           {dataFetched ? <ChartViewer data={data}></ChartViewer> : "loading"}
-        </IonRow>
+        </IonContent>
       </IonGrid>
     </IonPage>
   );
