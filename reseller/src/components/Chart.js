@@ -17,18 +17,18 @@ const dataSource = {
     skipNullValues: "1",
   },
   caption: {
-    text: "Profit Over Time",
+    text: "Revenue Over Time",
   },
   yaxis: [
     {
       plot: {
-        value: "Profit",
+        value: "Revenue",
         connectnulldata: true,
       },
       format: {
         prefix: "$",
       },
-      title: "Profit (CAD)",
+      title: "Revenue (CAD)",
     },
   ],
   legend: {
@@ -83,8 +83,8 @@ class ChartViewer extends React.Component {
       timeseriesDs: {
         type: "timeseries",
         renderAt: "container",
-        width: "50%",
-        height: "50%",
+        width: "500",
+        height: "500",
         stroke: "#B9B9C8",
         connectnulldata: true,
         dataSource,
@@ -104,7 +104,6 @@ class ChartViewer extends React.Component {
   }
 
   onFetchData() {
-    console.log(this.state.rawData);
     const data = this.parseProfit();
     const schema = [
       {
@@ -113,11 +112,10 @@ class ChartViewer extends React.Component {
         format: "%Y-%m-%d",
       },
       {
-        name: "Profit",
+        name: "revenue",
         type: "number",
       },
     ];
-    console.log(data);
     const fusionTable = new FusionCharts.DataStore().createDataTable(
       data,
       schema
@@ -129,17 +127,14 @@ class ChartViewer extends React.Component {
     });
   }
   parseProfit() {
-    console.log(this.state.rawData);
     let profit = this.state.rawData.map(
       (a) => parseFloat(a.askingPrice) - parseFloat(a.boughtPrice)
     );
-    console.log(profit);
     let date = this.state.rawData.map((a) => a.date);
     let profitData = [];
     for (let i = 0; i < profit.length; i++) {
       profitData.push(this.appendArrays(date[i], profit[i]));
     }
-    console.log(profitData);
     return profitData;
   }
 

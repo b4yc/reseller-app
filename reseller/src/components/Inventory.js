@@ -18,6 +18,7 @@ import React, { useState, useEffect } from "react";
 
 import InventoryTable from "./InventoryTable";
 import "./Inventory.scss";
+import "../App.css";
 import axios from "axios";
 
 const Inventory = () => {
@@ -206,7 +207,7 @@ const Inventory = () => {
           <IonCol className='header' size='1.5'>
             Bought Price
           </IonCol>
-          <IonCol className='header' size='1.5'>
+          <IonCol className="header" size="1.5">
             Asking Price
           </IonCol>
           <IonCol className='header' size='2'>
