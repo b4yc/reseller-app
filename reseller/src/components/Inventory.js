@@ -164,6 +164,49 @@ const Inventory = () => {
       .catch((e) => console.log(e));
   }
 
+  function updateExpenses(currentExpenses, id) {
+    let result = parseFloat(currentExpenses) + parseFloat(boughtPrice);
+
+    const expenseData = {
+      moneySpent: result,
+    };
+
+    const api = axios.create({
+      baseURL: "http://127.0.0.1:8000/api",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    api
+      .patch(`/expenses/${id}/`, expenseData)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => console.log(e));
+  }
+
+  function getExpenses() {
+    const sellerData = {
+      seller: id,
+    };
+
+    const api = axios.create({
+      baseURL: "http://127.0.0.1:8000/api",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    api
+      .get(`/expenses/`, { params: sellerData })
+      .then((response) => {
+        // setExpenses(response.data[0].moneySpent);
+        updateExpenses(response.data[0].moneySpent, response.data[0].id);
+      })
+      .catch((e) => console.log(e));
+  }
+
   /**
    * Format asking price
    */
@@ -387,6 +430,7 @@ const Inventory = () => {
                     }
                     setShowAddItem(false);
                     if (category === "ELECTRONICS") {
+                      getExpenses();
                       addElectronic();
                     }
                     if (category === "SHOE") {
@@ -394,6 +438,7 @@ const Inventory = () => {
                         setShowAlert(true);
                         return;
                       }
+                      getExpenses();
                       addShoe();
                     }
                     if (category === "CARD") {
@@ -401,6 +446,7 @@ const Inventory = () => {
                         setShowAlert(true);
                         return;
                       }
+                      getExpenses();
                       addCard();
                     }
                   }}
