@@ -1,5 +1,6 @@
 .authenticate {
-  width: 20%;
+  max-width: 50%;
+  min-width: 20%;
   align-self: center;
   text-align: center;
 }
