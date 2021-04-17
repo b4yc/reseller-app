@@ -83,8 +83,8 @@ class ChartViewer extends React.Component {
       timeseriesDs: {
         type: "timeseries",
         renderAt: "container",
-        width: "600",
-        height: "400",
+        width: "50%",
+        height: "50%",
         stroke: "#B9B9C8",
         connectnulldata: true,
         dataSource,
