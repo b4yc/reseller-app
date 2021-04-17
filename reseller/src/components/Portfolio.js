@@ -11,6 +11,8 @@ import {
   IonItemDivider,
   IonText,
   IonTitle,
+  IonButton,
+  IonAlert,
 } from "@ionic/react";
 import React, { useCallback, useEffect, useState } from "react";
 import FusionCharts from "fusioncharts";
@@ -31,6 +33,7 @@ let Portfolio = () => {
   const [items, setItems] = useState([]);
   const [buyers, setBuyers] = useState([]);
   const [noSales, setNoSales] = useState([]);
+  const [expenses, setExpenses] = useState();
   let data = [];
   let id;
   const api = axios.create({
@@ -39,6 +42,7 @@ let Portfolio = () => {
 
   useEffect(() => {
     retrieveSales();
+    getExpenses();
   }, []);
 
   const retrieveSales = async () => {
@@ -106,17 +110,45 @@ let Portfolio = () => {
     data = temp;
   }
 
+  function getExpenses() {
+    const url = window.location.href;
+    id = url.split("/").pop();
+
+    const sellerData = {
+      seller: id,
+    };
+
+    const api = axios.create({
+      baseURL: "http://127.0.0.1:8000/api",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    api
+      .get(`/expenses/`, { params: sellerData })
+      .then((response) => {
+        setExpenses(response.data[0].moneySpent);
+      })
+      .catch((e) => console.log(e));
+  }
+
   return (
     <IonPage style={{ overflow: "auto", overflowX: "auto" }}>
       <IonGrid>
         <IonRow>
-          <IonCol className="header" size="1">
+          <IonCol>
+            <IonText>{`Total Expenses: $${expenses}`}</IonText>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className='header' size='1'>
             ID
           </IonCol>
-          <IonCol className="header" size="8">
+          <IonCol className='header' size='8'>
             Item
           </IonCol>
-          <IonCol className="header" size="3">
+          <IonCol className='header' size='3'>
             Buyer
           </IonCol>
         </IonRow>

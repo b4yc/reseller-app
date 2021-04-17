@@ -18,7 +18,6 @@ import React, { useState, useEffect } from "react";
 import { EditText } from "react-edit-text";
 import "./Table.scss";
 import axios from "axios";
-import { items } from "fusioncharts";
 
 const InventoryTable = ({
   ID,
