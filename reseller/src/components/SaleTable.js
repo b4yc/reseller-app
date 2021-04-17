@@ -16,6 +16,7 @@ const SaleTable = ({
   buyerLName,
   buyerEmail,
   buyerAddress,
+  revenue,
 }) => {
   const [showBuyerAlert, setShowBuyerAlert] = useState(false);
 
@@ -25,7 +26,7 @@ const SaleTable = ({
         <IonCol className="col" size="1">
           {ID}
         </IonCol>
-        <IonCol className="col" size="8">
+        <IonCol className="col" size="6">
           {item}
         </IonCol>
         <IonCol className="buyerCol" size="3">
@@ -41,6 +42,9 @@ const SaleTable = ({
             message={`Email: ${buyerEmail}` + ` Address: ${buyerAddress}`}
             buttons={["Close"]}
           />
+        </IonCol>
+        <IonCol className="col" size="2">
+          ${revenue}
         </IonCol>
       </IonRow>
     );

@@ -17,18 +17,18 @@ const dataSource = {
     skipNullValues: "1",
   },
   caption: {
-    text: "Revenue Over Time",
+    text: "Profit Over Time",
   },
   yaxis: [
     {
       plot: {
-        value: "Revenue",
+        value: "Profit",
         connectnulldata: true,
       },
       format: {
         prefix: "$",
       },
-      title: "Revenue (CAD)",
+      title: "Profit (CAD)",
     },
   ],
   legend: {
@@ -112,7 +112,7 @@ class ChartViewer extends React.Component {
         format: "%Y-%m-%d",
       },
       {
-        name: "revenue",
+        name: "Profit",
         type: "number",
       },
     ];
@@ -127,9 +127,17 @@ class ChartViewer extends React.Component {
     });
   }
   parseProfit() {
+    this.state.rawData.sort(function (a, b) {
+      return new Date(a.date) - new Date(b.date);
+    });
     let profit = this.state.rawData.map(
       (a) => parseFloat(a.askingPrice) - parseFloat(a.boughtPrice)
     );
+    let cumulative = 0;
+    for (let i = 0; i < profit.length; i++) {
+      profit[i] = profit[i] + cumulative;
+      cumulative += profit[i];
+    }
     let date = this.state.rawData.map((a) => a.date);
     let profitData = [];
     for (let i = 0; i < profit.length; i++) {
