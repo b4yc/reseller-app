@@ -12,6 +12,7 @@ import {
   IonGrid,
   IonButton,
   IonInput,
+  IonText,
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { EditText } from "react-edit-text";
@@ -239,7 +240,17 @@ const InventoryTable = ({
     setBuyer();
   }
 
-  console.log("I am here: ", existingBuyers);
+  function formatText(category) {
+    if (category === "ELECTRONICS") {
+      return "Electronics";
+    } else if (category === "SHOE") {
+      return "Shoe";
+    } else if (category === "CARD") {
+      return "Card";
+    }
+  }
+
+  // console.log("I am here: ", existingBuyers);
   return (
     <IonRow>
       <IonCol className='col' size='0.5'>
@@ -282,12 +293,7 @@ const InventoryTable = ({
         </IonModal>
       </IonCol>
       <IonCol className='col' size='1.5'>
-        <EditText
-          className='textBox'
-          value={bprice1.toString()}
-          onChange={handleChangeB}
-          onSave={handleSaveB}
-        />
+        {bprice1.toString()}
       </IonCol>
       <IonCol className='col' size='1.5'>
         <EditText
@@ -300,17 +306,8 @@ const InventoryTable = ({
           }}
         />
       </IonCol>
-      <IonCol size='2'>
-        <IonSelect
-          interface='popover'
-          interfaceOptions={options}
-          value={category1}
-          onIonChange={(e) => setCategory(e.detail.value)}
-        >
-          <IonSelectOption value='CARD'>Card</IonSelectOption>
-          <IonSelectOption value='ELECTRONICS'>Electronic</IonSelectOption>
-          <IonSelectOption value='SHOE'>Shoe</IonSelectOption>
-        </IonSelect>
+      <IonCol size='2' className='col'>
+        <IonText>{formatText(category1)}</IonText>
       </IonCol>
       <IonCol size='2'>
         <IonSelect
