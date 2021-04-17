@@ -416,7 +416,13 @@ const InventoryTable = ({
                     expand='full'
                     onClick={() => {
                       if (buyerType === "NEW") {
-                        if (!firstName || !lastName || !email || !address) {
+                        if (
+                          !firstName ||
+                          !lastName ||
+                          !email ||
+                          !address ||
+                          !validateEmail(email)
+                        ) {
                           setShowAlert(true);
                           return;
                         }
@@ -443,7 +449,7 @@ const InventoryTable = ({
             <IonAlert
               isOpen={showAlert}
               onDidDismiss={() => setShowAlert(false)}
-              message='Please Enter All Fields'
+              message='Please Enter All Fields Correctly'
               buttons={[
                 {
                   text: "OK",
