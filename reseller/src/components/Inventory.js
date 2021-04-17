@@ -207,7 +207,7 @@ const Inventory = () => {
           <IonCol className='header' size='1.5'>
             Bought Price
           </IonCol>
-          <IonCol className="header" size="1.5">
+          <IonCol className='header' size='1.5'>
             Asking Price
           </IonCol>
           <IonCol className='header' size='2'>

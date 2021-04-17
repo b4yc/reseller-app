@@ -109,4 +109,4 @@ class Sale(models.Model):
 
 class Expense(models.Model):
     seller = models.ForeignKey(Seller, on_delete=CASCADE)
-    moneySpent = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    moneySpent = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
