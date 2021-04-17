@@ -133,29 +133,44 @@ let Portfolio = () => {
       .catch((e) => console.log(e));
   }
 
+  function getProfit() {
+    let temp = data;
+    temp.sort(function (a, b) {
+      return new Date(a.date) - new Date(b.date);
+    });
+    let profit = temp.map(
+      (a) => parseFloat(a.askingPrice) - parseFloat(a.boughtPrice)
+    );
+    let cumulative = 0;
+    for (let i = 0; i < profit.length; i++) {
+      cumulative += profit[i];
+    }
+    return cumulative.toFixed(2);
+  }
+
   return (
     <IonPage style={{ overflow: "auto", overflowX: "auto" }}>
       <IonGrid>
         <IonRow>
           <IonCol>
-            <IonText>{`Total Expenses: $${expenses}`}</IonText>
+            {combineData()}
+            <IonText>{`Total Expenses: $${expenses} Total Profit: $${getProfit()}`}</IonText>
           </IonCol>
         </IonRow>
         <IonRow>
-          <IonCol className='header' size='1'>
+          <IonCol className="header" size="1">
             ID
           </IonCol>
           <IonCol className="header" size="6">
             Item
           </IonCol>
-          <IonCol className='header' size='3'>
+          <IonCol className="header" size="3">
             Buyer
           </IonCol>
           <IonCol className="header" size="2">
-            Revenue
+            Profit
           </IonCol>
         </IonRow>
-        {combineData()}
         {data.map((d) => (
           <SaleTable
             ID={d.item}
