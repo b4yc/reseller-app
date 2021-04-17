@@ -110,7 +110,7 @@ let Portfolio = () => {
   }
 
   return (
-    <IonPage>
+    <IonPage style={{ overflow: "auto" }}>
       <IonGrid>
         <IonRow>
           <IonCol className="header" size="1">
@@ -135,13 +135,9 @@ let Portfolio = () => {
             buyerAddress={d.address}
           ></SaleTable>
         ))}
-        <SaleTable></SaleTable>
         <IonItemDivider />
-        {console.log(dataFetched)}
-        <IonRow>
-          {dataFetched ? <ChartViewer data={data}></ChartViewer> : "loading"}
-        </IonRow>
       </IonGrid>
+      {dataFetched ? <ChartViewer data={data}></ChartViewer> : "loading"}
     </IonPage>
   );
 };
