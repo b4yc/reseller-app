@@ -21,11 +21,11 @@ On one terminal, navigate into the backend directory.
 cd backend
 ```
 Install the dependencies (we highly recommend using a virtual environment):
-```
+```bash
 pip install -r requirements.txt
 ```
 Start the server:
-```
+```bash
 cd reseller
 python manage.py runserver
 ```
@@ -36,11 +36,11 @@ On the other terminal, navigate into the front-end directory.
 cd reseller
 ```
 Install the dependencies:
-```
+```bash
 yarn install
 ```
 Deploy the application:
-```
+```bash
 ionic serve
 ```
 A local development server on localhost:8100 should start up and you can now start reZelling!
