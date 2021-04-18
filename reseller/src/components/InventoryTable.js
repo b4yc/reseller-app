@@ -131,9 +131,7 @@ const InventoryTable = ({
 
     api
       .patch(`/items/${itemID}/`, statusData)
-      .then((res) => {
-        console.log(res);
-      })
+      .then((res) => {})
       .catch((error) => {
         console.log(error.response);
       });
@@ -153,9 +151,7 @@ const InventoryTable = ({
 
     api
       .patch(`/items/${itemID}/`, priceData)
-      .then((res) => {
-        console.log(res);
-      })
+      .then((res) => {})
       .catch((error) => {
         console.log(error.response);
       });
@@ -175,8 +171,6 @@ const InventoryTable = ({
 
     api.get(`/buyers/`, { params: sellerData }).then((response) => {
       setExistingBuyers(response.data);
-      // console.log("should have:", response.data);
-      // console.log("has", existingBuyers);
     });
   }
 
@@ -197,7 +191,6 @@ const InventoryTable = ({
     api
       .post(`/buyers/`, buyerData)
       .then((response) => {
-        console.log(response);
         getExistingBuyers();
         let buyerID = response.data.id;
         addSale(buyerID, itemID);
@@ -224,9 +217,7 @@ const InventoryTable = ({
     });
     api
       .post(`/sales/`, saleData)
-      .then((response) => {
-        console.log(response);
-      })
+      .then((response) => {})
       .catch((e) => console.log(e));
   }
 
@@ -249,7 +240,6 @@ const InventoryTable = ({
     }
   }
 
-  // console.log("I am here: ", existingBuyers);
   return (
     <IonRow>
       <IonCol className='col' size='0.5'>
@@ -424,7 +414,6 @@ const InventoryTable = ({
                         }
                         setShowBuyer(false);
                         addBuyer(ID);
-                        console.log("in code has: ", existingBuyers);
                       }
                       if (buyerType === "EXISTING") {
                         if (!buyer) {
