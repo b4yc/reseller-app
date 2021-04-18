@@ -29,49 +29,70 @@ const InventoryTable = ({
   category,
   status,
 }) => {
-  const [showShoe, setShowShoe] = useState(false);
-  const [showElectronics, setShowElectronics] = useState(false);
-  const [showCard, setShowCard] = useState(false);
-  const [status1, setStatus] = useState(status);
-  const [category1, setCategory] = useState(category);
-  const [bprice1, setBPrice] = useState(bprice);
-  const [sprice1, setSPrice] = useState(sprice);
-  const [showBuyer, setShowBuyer] = useState(false);
-  const [buyerType, setBuyerType] = useState();
-  const [existingBuyers, setExistingBuyers] = useState([]);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState();
-  const [address, setAddress] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
-  const [buyer, setBuyer] = useState();
-  const [size, setSize] = useState();
-  const [year, setYear] = useState();
+  const [showShoe, setShowShoe] = useState(false); // use state for the shoe modal
+  const [showElectronics, setShowElectronics] = useState(false); // use state for the electronics modal
+  const [showCard, setShowCard] = useState(false); // use state for the card modal
+  const [status1, setStatus] = useState(status); // use state for updating status
+  const [category1, setCategory] = useState(category); // use state for category
+  const [bprice1, setBPrice] = useState(bprice); // use state for bought price
+  const [sprice1, setSPrice] = useState(sprice); // use state for asking price
+  const [showBuyer, setShowBuyer] = useState(false); // use state for buyer modal
+  const [buyerType, setBuyerType] = useState(); // use state for buyer type
+  const [existingBuyers, setExistingBuyers] = useState([]); // use state for existing customers
+  const [firstName, setFirstName] = useState(""); // use state for buyer first name
+  const [lastName, setLastName] = useState(""); // use state for buyer last name
+  const [email, setEmail] = useState(); // use state for buyer email
+  const [address, setAddress] = useState(""); // use state for buyer address
+  const [showAlert, setShowAlert] = useState(false); // use state for alert
+  const [buyer, setBuyer] = useState(); // use state for buyer
+  const [size, setSize] = useState(); // use state for size
+  const [year, setYear] = useState(); // use state for year
   const url = window.location.href;
   const sellerID = url.split("/").pop();
 
+  /**
+   * Getting all the existing buyers on page load
+   */
   useEffect(() => {
     getExistingBuyers();
   }, []);
 
+  /**
+   * Handles changing the bought price
+   * @param {*} val the new bought price
+   */
   const handleChangeB = (val) => {
     setBPrice(val);
   };
 
+  /**
+   * Handles changing the asking price
+   * @param {*} val the new asking price
+   */
   const handleChangeS = (val) => {
     setSPrice(val);
   };
 
+  /**
+   * Handles saving the new bought price
+   * @param {*} val the new asking price
+   */
   const handleSaveB = (val) => {
-    /** POST changes to db */
     setBPrice(parseFloat(bprice1).toFixed(2));
   };
 
+  /**
+   * Handles saving the new asking price
+   */
   const handleSaveS = () => {
-    /** POST changes to db */
     setSPrice(parseFloat(sprice1).toFixed(2));
   };
 
+  /**
+   * Validates the email field
+   * @param {*} email
+   * @returns true if the email is valid, false otherwise
+   */
   function validateEmail(email) {
     const re = /^((?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))$/;
     if (!re.test(String(email).toLowerCase())) {
@@ -80,10 +101,17 @@ const InventoryTable = ({
     return true;
   }
 
+  /**
+   * Css option formatting
+   */
   const options = {
     cssClass: "dropdown-interface",
   };
 
+  /**
+   * Get request for the shoe size.
+   * @param {*} itemID the id of the item
+   */
   function getShoeSize(itemID) {
     const api = axios.create({
       baseURL: "http://127.0.0.1:8000/api",
@@ -101,6 +129,10 @@ const InventoryTable = ({
       .catch((e) => console.log(e));
   }
 
+  /**
+   * Get request for the card year
+   * @param {*} itemID the id of the item
+   */
   function getCardYear(itemID) {
     const api = axios.create({
       baseURL: "http://127.0.0.1:8000/api",
@@ -118,6 +150,11 @@ const InventoryTable = ({
       .catch((e) => console.log(e));
   }
 
+  /**
+   * Patch request changing the status of an item
+   * @param {*} itemID the id of the item
+   * @param {*} itemStatus the status of the item
+   */
   function changeStatus(itemID, itemStatus) {
     const statusData = {
       status: itemStatus,
@@ -137,6 +174,11 @@ const InventoryTable = ({
       });
   }
 
+  /**
+   * Patch request changing the asking price of an item
+   * @param {*} itemID
+   * @param {*} newPrice
+   */
   function changeAskingPrice(itemID, newPrice) {
     newPrice = parseFloat(newPrice).toFixed(2);
     const priceData = {
@@ -157,6 +199,9 @@ const InventoryTable = ({
       });
   }
 
+  /**
+   * Get request for the existing buyers of a seller.
+   */
   function getExistingBuyers() {
     const sellerData = {
       id: sellerID,
@@ -174,6 +219,10 @@ const InventoryTable = ({
     });
   }
 
+  /**
+   * Post request to add a new buyer to the existing table of buyers.
+   * @param {*} itemID the id of the item
+   */
   function addBuyer(itemID) {
     const buyerData = {
       firstName: firstName,
@@ -202,6 +251,11 @@ const InventoryTable = ({
       });
   }
 
+  /**
+   * Post request to add a new sale to the existing table of sales
+   * @param {*} buyerID the id of the buyer
+   * @param {*} itemID the id of the item
+   */
   function addSale(buyerID, itemID) {
     const saleData = {
       date: new Date().toISOString().slice(0, 10),
@@ -221,6 +275,9 @@ const InventoryTable = ({
       .catch((e) => console.log(e));
   }
 
+  /**
+   * Clears the data in the buyer modal.
+   */
   function clearData() {
     setBuyerType();
     setFirstName("");
@@ -230,6 +287,11 @@ const InventoryTable = ({
     setBuyer();
   }
 
+  /**
+   * Formats category text
+   * @param {*} category the category
+   * @returns capital first letter, lowercase rest
+   */
   function formatText(category) {
     if (category === "ELECTRONICS") {
       return "Electronics";
