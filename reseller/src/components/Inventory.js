@@ -159,6 +159,11 @@ const Inventory = () => {
       .catch((e) => console.log(e));
   }
 
+  /**
+   * Post request for expenses table
+   * @param {*} currentExpenses the current expenses
+   * @param {*} id the id of the entry in the expense table
+   */
   function updateExpenses(currentExpenses, id) {
     let result = parseFloat(currentExpenses) + parseFloat(boughtPrice);
 
@@ -179,6 +184,9 @@ const Inventory = () => {
       .catch((e) => console.log(e));
   }
 
+  /**
+   * Get request for expenses table
+   */
   function getExpenses() {
     const sellerData = {
       seller: id,
@@ -213,6 +221,9 @@ const Inventory = () => {
     setBoughtPrice(parseFloat(boughtPrice).toFixed(2));
   }
 
+  /**
+   * Clears the data after the add item modal is dismissed
+   */
   function clearData() {
     setCategory();
     setName("");
